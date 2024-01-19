@@ -19,17 +19,28 @@ public class PageBuilder {
 
     private GUI gui;
     private int rows = 1;
+    private final int size = rows * 9;
     private String name = "Page";
-    private final HashMap<Integer, Button> buttons = new HashMap<>();
-    private final ArrayList<PageHandler> handlers = new ArrayList<>();
+    private HashMap<Integer, Button> buttons = new HashMap<>();
+    private ArrayList<PageHandler> handlers = new ArrayList<>();
     private boolean includeControls = false;
+
+    public PageBuilder(Page copy) {
+        if (copy != null) {
+            this.gui = copy.getGui();
+            this.rows = copy.getSize() / 9;
+            this.name = copy.getName();
+            this.buttons = new HashMap<>(copy.getButtons());
+            this.handlers = new ArrayList<>(copy.getHandlers());
+        }
+    }
 
     public PageBuilder(GUI gui) {
         this.gui = gui;
     }
 
     public PageBuilder() {
-        this(null);
+        this((GUI) null);
     }
 
     public PageBuilder gui(GUI gui) {
@@ -53,7 +64,54 @@ public class PageBuilder {
     }
 
     public PageBuilder button(Button button) {
-        this.buttons.put(this.buttons.size() - 1, button);
+        return button(this.buttons.keySet().size() - 1, button);
+    }
+
+    public PageBuilder fill(Button button) {
+        for (int i = 0; i < size; i++) {
+            if (this.buttons.get(i) == null) {
+                button(i, button);
+            }
+        }
+        return this;
+    }
+
+    public PageBuilder fillRow(int row, Button button) {
+        int index = row * 9;
+        for (int i = 0; i < 9; i++) {
+            int slot = index + i;
+            if (slot < size) {
+                if (this.buttons.get(i) == null) {
+                    button(slot, button);
+                }
+            }
+        }
+        return this;
+    }
+
+    public PageBuilder outline(Button button) {
+        int rows = size / 9;
+        int cols = 9;
+
+        // Fill top
+        for (int i = 0; i < cols; i++) {
+            if (this.buttons.get(i) == null) {
+                button(i, button);
+            }
+            if (this.buttons.get(rows * 9 - i - 1) == null) {
+                button(rows * 9 - i - 1, button);
+            }
+        }
+
+        // Fill left and right borders (excluding corners)
+        for (int i = 1; i < rows - 1; i++) {
+            if (this.buttons.get(i) == null) {
+                button(i * 9, button);
+            }
+            if (this.buttons.get(rows * 9 - i - 1) == null) {
+                button(i * 9 + cols - 1, button);
+            }
+        }
         return this;
     }
 

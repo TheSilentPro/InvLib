@@ -15,6 +15,14 @@ import java.util.*;
  */
 public interface Page extends InventoryHolder {
 
+    static PageBuilder newBuilder() {
+        return new PageBuilder();
+    }
+
+    static PageBuilder newBuilder(Page copy) {
+        return new PageBuilder(copy);
+    }
+
     /**
      * The GUI instance that this page belongs to.
      *
