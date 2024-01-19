@@ -5,7 +5,10 @@ import tsp.invlib.gui.page.Page;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author TheSilentPro (Silent)
@@ -19,18 +22,30 @@ public class SimpleGUI implements GUI, Serializable {
 
     private int currentPage;
 
+    public SimpleGUI(ArrayList<Page> pages) {
+        this.pages = pages;
+    }
+
     public SimpleGUI(List<Page> pages) {
-        this.pages = new ArrayList<>(pages);
+        this(new ArrayList<>(pages));
     }
 
     public SimpleGUI() {
-        this.pages = new ArrayList<>();
+        this(new ArrayList<>());
     }
 
+    /**
+     * This method is currently not implemented and will throw an exception.
+     *
+     * @param index The index.
+     * @param page The page.
+     * @deprecated Not implemented yet.
+     */
+    @Deprecated
     @Override
     public void setPage(int index, Page page) {
-        throw new UnsupportedOperationException("Not implemented");
-        //this.pages.put(index, page);
+        throw new UnsupportedOperationException("Not implemented! Use GUI#addPage(page); instead.");
+        //this.pages.set(index, page);
     }
 
     @Override
@@ -39,7 +54,6 @@ public class SimpleGUI implements GUI, Serializable {
             page.setGui(this);
         }
         this.pages.add(page);
-        //this.pages.put(this.pages.keySet().size() == 0 ? 0 : this.pages.keySet().size() + 1, page);
     }
 
     @Override

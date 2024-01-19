@@ -128,7 +128,7 @@ public class SimplePage implements Page, Serializable {
         inventory.clear();
         for (Map.Entry<Integer, Button> entry : buttons.entrySet()) {
             Button button = entry.getValue();
-            if (button != null && !button.getItem().getType().isAir()) {
+            if (button != null) {
                 inventory.setItem(entry.getKey(), button.getItem());
             }
         }

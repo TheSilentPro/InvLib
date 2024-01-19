@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
+ * A simple {@link Button} implementation.
+ *
  * @author TheSilentPro (Silent)
  */
 public class SimpleButton implements Button, Serializable {
