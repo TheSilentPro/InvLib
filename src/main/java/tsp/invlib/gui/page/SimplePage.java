@@ -1,8 +1,15 @@
 package tsp.invlib.gui.page;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
+import tsp.invlib.gui.button.control.ControlButton;
+import tsp.invlib.gui.button.control.ControlType;
 import tsp.invlib.handler.PageHandler;
 
 import javax.annotation.Nonnull;
@@ -18,18 +25,37 @@ public class SimplePage implements Page, Serializable {
     @Serial
     private static final long serialVersionUID = -2303582995747170968L;
 
+    private GUI gui;
     private final int size;
     private final String name;
     private final HashMap<Integer, Button> buttons;
     private final ArrayList<PageHandler> handlers;
     private final Inventory inventory;
+    private final boolean includeControls;
 
-    public SimplePage(int rows, String name, Map<Integer, Button> buttons, List<PageHandler> handlers) {
+    private ControlButton controlBack;
+    private ControlButton controlCurrent;
+    private ControlButton controlNext;
+
+
+    public SimplePage(GUI gui, int rows, String name, Map<Integer, Button> buttons, boolean includeControls, List<PageHandler> handlers) {
+        this.gui = gui;
         this.size = rows * 9;
         this.name = name;
         this.buttons = new HashMap<>(buttons);
         this.handlers = new ArrayList<>(handlers);
         this.inventory = Bukkit.createInventory(this, size, name);
+        this.includeControls = includeControls;
+    }
+
+    @Override
+    public GUI getGui() {
+        return gui;
+    }
+
+    @Override
+    public void setGui(GUI gui) {
+        this.gui = gui;
     }
 
     @Override
@@ -59,6 +85,46 @@ public class SimplePage implements Page, Serializable {
 
     @Override
     public void reRender() {
+        // Add controls
+        if (includeControls) {
+            // back
+            if (controlBack == null && gui.getCurrentPage() - 1 > -1) {
+                controlBack = new ControlButton(size - 6, new ItemBuilder()
+                        .material(Material.ARROW)
+                        .name(ChatColor.RED + "Back")
+                        .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human number
+                        .build(), this, ControlType.BACK);
+            }
+            if (controlBack != null) {
+                setButton(controlBack.getSlot(), controlBack);
+            }
+
+            // current
+            if (controlCurrent == null) {
+                controlCurrent = new ControlButton(size - 5, new ItemBuilder()
+                        .material(Material.PAPER)
+                        .name(ChatColor.GOLD + "Page " + (gui.getCurrentPage() >= gui.getPages().size() ? ChatColor.RED : ChatColor.GREEN) +
+                                (gui.getCurrentPage() + 1) + // +1 for human number
+                                ChatColor.GRAY + "/" +
+                                ChatColor.RED + gui.getPages().size())
+                        .build(), this, ControlType.CURRENT);
+            }
+            setButton(controlCurrent.getSlot(), controlCurrent); // No need for null-check, this is always not-null due to guard block above.
+
+            // next
+            if (controlNext == null && gui.getNextPage() < gui.getPages().size()) {
+                controlNext = new ControlButton(size - 4, new ItemBuilder()
+                        .material(Material.ARROW)
+                        .name(ChatColor.GREEN + "Next")
+                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getNextPage() + 1)) // +1 for human number
+                        .build(), this, ControlType.NEXT);
+            }
+            if (controlNext != null) {
+                setButton(controlNext.getSlot(), controlNext);
+            }
+        }
+
+        // Update inventory
         inventory.clear();
         for (Map.Entry<Integer, Button> entry : buttons.entrySet()) {
             Button button = entry.getValue();
@@ -77,6 +143,42 @@ public class SimplePage implements Page, Serializable {
     @Override
     public List<PageHandler> getHandlers() {
         return handlers;
+    }
+
+    private static class ItemBuilder {
+
+        private Material material;
+        private String name;
+        private final List<String> lore = new ArrayList<>();
+
+        public ItemBuilder material(Material material) {
+            this.material = material;
+            return this;
+        }
+
+        public ItemBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ItemBuilder lore(String line) {
+            this.lore.add(line);
+            return this;
+        }
+
+        public ItemStack build() {
+            ItemStack item = new ItemStack(material);
+            ItemMeta meta = item.getItemMeta();
+            if (meta == null) {
+                throw new IllegalArgumentException("Item can not have meta!");
+            }
+
+            meta.setDisplayName(name);
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+            return item;
+        }
+
     }
 
 }

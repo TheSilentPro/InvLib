@@ -2,6 +2,7 @@ package tsp.invlib.gui.page;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
+import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
 import tsp.invlib.handler.PageHandler;
 
@@ -11,6 +12,10 @@ import java.util.*;
  * @author TheSilentPro (Silent)
  */
 public interface Page extends InventoryHolder {
+
+    GUI getGui();
+
+    void setGui(GUI gui);
 
     int getSize();
 

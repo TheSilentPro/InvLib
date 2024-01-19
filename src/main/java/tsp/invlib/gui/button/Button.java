@@ -13,7 +13,9 @@ public interface Button {
 
     ItemStack getItem();
 
-    Optional<Consumer<InventoryClickEvent>> getClickAction();
+    default Optional<Consumer<InventoryClickEvent>> getClickAction() {
+        return Optional.empty();
+    }
 
     void onClick(InventoryClickEvent event);
 

@@ -1,6 +1,7 @@
 package tsp.invlib.gui.page;
 
 import tsp.invlib.InvLib;
+import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
 import tsp.invlib.handler.PageClickHandler;
 import tsp.invlib.handler.PageCloseHandler;
@@ -16,10 +17,25 @@ import java.util.List;
  */
 public class PageBuilder {
 
+    private GUI gui;
     private int rows = 1;
     private String name = "Page";
     private final HashMap<Integer, Button> buttons = new HashMap<>();
     private final ArrayList<PageHandler> handlers = new ArrayList<>();
+    private boolean includeControls = false;
+
+    public PageBuilder(GUI gui) {
+        this.gui = gui;
+    }
+
+    public PageBuilder() {
+        this(null);
+    }
+
+    public PageBuilder gui(GUI gui) {
+        this.gui = gui;
+        return this;
+    }
 
     public PageBuilder rows(int rows) {
         this.rows = rows;
@@ -41,6 +57,11 @@ public class PageBuilder {
         return this;
     }
 
+    public PageBuilder includeControlButtons() {
+        this.includeControls = true;
+        return this;
+    }
+
     public PageBuilder handler(PageHandler handler) {
         this.handlers.add(handler);
         return this;
@@ -52,18 +73,15 @@ public class PageBuilder {
     }
 
     public PageBuilder onOpen(PageOpenHandler handler) {
-        handler(handler);
-        return this;
+        return handler(handler);
     }
 
     public PageBuilder onClose(PageCloseHandler handler) {
-        handler(handler);
-        return this;
+       return handler(handler);
     }
 
     public PageBuilder onClick(PageClickHandler handler) {
-        handler(handler);
-        return this;
+        return handler(handler);
     }
 
     public PageBuilder preventClick() {
@@ -75,7 +93,7 @@ public class PageBuilder {
     }
 
     public Page build() {
-        return new SimplePage(rows, name, buttons, handlers);
+        return new SimplePage(gui, rows, name, buttons, includeControls, handlers);
     }
 
 }

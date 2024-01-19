@@ -12,9 +12,19 @@ public interface GUI {
 
     void setPage(int index, Page page);
 
+    void addPage(Page page);
+
     Optional<Page> getPage(int index);
 
-    Map<Integer, Page> getPages();
+    List<Page> getPages();
+
+    int getCurrentPage();
+
+    int getNextPage();
+
+    int getPreviousPage();
+
+    void setCurrentPage(int currentPage);
 
     void open(Player player, int page);
 
