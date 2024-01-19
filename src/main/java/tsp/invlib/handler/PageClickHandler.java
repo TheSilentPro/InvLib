@@ -7,6 +7,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  */
 public interface PageClickHandler extends PageHandler {
 
+    /**
+     * Fired when a {@link tsp.invlib.gui.page.Page} is clicked.
+     *
+     * @param event The event trigger.
+     */
     void onClick(InventoryClickEvent event);
 
 }

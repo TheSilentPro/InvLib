@@ -11,6 +11,8 @@ import tsp.invlib.handler.PageCloseHandler;
 import tsp.invlib.handler.PageOpenHandler;
 
 /**
+ * Listener class for all {@link Page} related {@link Listener Listeners}.
+ *
  * @author TheSilentPro (Silent)
  */
 public class PageListeners implements Listener {

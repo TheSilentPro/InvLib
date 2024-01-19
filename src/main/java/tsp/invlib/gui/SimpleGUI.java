@@ -1,8 +1,10 @@
 package tsp.invlib.gui;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.entity.Player;
 import tsp.invlib.gui.page.Page;
 
+import javax.annotation.Nonnull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ public class SimpleGUI implements GUI, Serializable {
 
     private int currentPage;
 
-    public SimpleGUI(ArrayList<Page> pages) {
-        this.pages = pages;
+    public SimpleGUI(@Nonnull ArrayList<Page> pages) {
+        this.pages = Preconditions.checkNotNull(pages, "Pages list must not be null!");
     }
 
     public SimpleGUI(List<Page> pages) {
@@ -66,7 +68,6 @@ public class SimpleGUI implements GUI, Serializable {
         return Collections.unmodifiableList(pages);
     }
 
-    // 0 based
     public int getCurrentPage() {
         return currentPage;
     }

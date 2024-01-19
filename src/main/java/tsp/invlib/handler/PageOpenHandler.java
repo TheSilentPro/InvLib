@@ -7,6 +7,11 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
  */
 public interface PageOpenHandler extends PageHandler {
 
+    /**
+     * Fired when a {@link tsp.invlib.gui.page.Page} is opened.
+     *
+     * @param event The event trigger.
+     */
     void onOpen(InventoryOpenEvent event);
 
 }

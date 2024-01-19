@@ -1,5 +1,6 @@
 package tsp.invlib.gui.page;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,13 +38,19 @@ public class SimplePage implements Page, Serializable {
     private ControlButton controlCurrent;
     private ControlButton controlNext;
 
-
-    public SimplePage(GUI gui, int rows, String name, Map<Integer, Button> buttons, boolean includeControls, List<PageHandler> handlers) {
-        this.gui = gui;
+    public SimplePage(
+            @Nonnull GUI gui,
+            int rows,
+            @Nonnull String name,
+            @Nonnull Map<Integer, Button> buttons,
+            boolean includeControls,
+            @Nonnull List<PageHandler> handlers
+    ) {
+        this.gui = Preconditions.checkNotNull(gui, "Gui must not be null!");
         this.size = rows * 9;
-        this.name = name;
-        this.buttons = new HashMap<>(buttons);
-        this.handlers = new ArrayList<>(handlers);
+        this.name = Preconditions.checkNotNull(name, "Name must not be null!");
+        this.buttons = new HashMap<>(Preconditions.checkNotNull(buttons, "Buttons map must not be null!"));
+        this.handlers = new ArrayList<>(Preconditions.checkNotNull(handlers, "Handlers list must not be null!"));
         this.inventory = Bukkit.createInventory(this, size, name);
         this.includeControls = includeControls;
     }

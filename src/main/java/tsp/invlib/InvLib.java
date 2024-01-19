@@ -12,6 +12,11 @@ public class InvLib {
 
     private static JavaPlugin instance;
 
+    /**
+     * Initialize the library.
+     *
+     * @param plugin The plugin instance.
+     */
     public static void init(JavaPlugin plugin) {
         instance = plugin;
         plugin.getServer().getPluginManager().registerEvents(new PageListeners(), plugin);

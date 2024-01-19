@@ -15,6 +15,9 @@ import java.util.function.Consumer;
  */
 public interface Button {
 
+    /**
+     * Default AIR item.
+     */
     ItemStack AIR = new ItemStack(Material.AIR);
 
     /**

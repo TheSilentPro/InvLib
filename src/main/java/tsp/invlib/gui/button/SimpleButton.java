@@ -1,8 +1,10 @@
 package tsp.invlib.gui.button;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,8 +24,8 @@ public class SimpleButton implements Button, Serializable {
     private final ItemStack item;
     private final Consumer<InventoryClickEvent> clickAction;
 
-    public SimpleButton(ItemStack item, @Nullable Consumer<InventoryClickEvent> clickAction) {
-        this.item = item;
+    public SimpleButton(@Nonnull ItemStack item, @Nullable Consumer<InventoryClickEvent> clickAction) {
+        this.item = Preconditions.checkNotNull(item, "Item  must not be null!");
         this.clickAction = clickAction;
     }
 
