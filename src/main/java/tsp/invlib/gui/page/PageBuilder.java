@@ -19,7 +19,7 @@ public class PageBuilder {
 
     private GUI gui;
     private int rows = 1;
-    private final int size = rows * 9;
+    private int size;
     private String name = "Page";
     private HashMap<Integer, Button> buttons = new HashMap<>();
     private ArrayList<PageHandler> handlers = new ArrayList<>();
@@ -29,6 +29,7 @@ public class PageBuilder {
         if (copy != null) {
             this.gui = copy.getGui();
             this.rows = copy.getSize() / 9;
+            this.size = size * 9;
             this.name = copy.getName();
             this.buttons = new HashMap<>(copy.getButtons());
             this.handlers = new ArrayList<>(copy.getHandlers());
@@ -50,6 +51,7 @@ public class PageBuilder {
 
     public PageBuilder rows(int rows) {
         this.rows = rows;
+        this.size = rows * 9;
         return this;
     }
 

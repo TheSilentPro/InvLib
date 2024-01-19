@@ -29,6 +29,10 @@ public class SimpleButton implements Button, Serializable {
         this.clickAction = clickAction;
     }
 
+    public SimpleButton(@Nonnull ItemStack item) {
+        this(item, null);
+    }
+
     @Override
     public void onClick(InventoryClickEvent event) {
         getClickAction().ifPresent(a -> a.accept(event));
