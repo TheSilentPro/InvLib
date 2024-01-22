@@ -74,10 +74,7 @@ public class PageBuilder {
         Bukkit.broadcastMessage("fill called! Size: " + size);
         for (int i = 0; i < size; i++) {
             if (this.buttons.get(i) == null) {
-                Bukkit.broadcastMessage("buttons does not contain " + i + ", filling...");
                 button(i, button);
-            } else {
-                Bukkit.broadcastMessage("Buttons contains " + i + ", skipping!");
             }
         }
         return this;
