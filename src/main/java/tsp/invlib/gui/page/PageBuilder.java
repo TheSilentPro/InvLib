@@ -1,5 +1,6 @@
 package tsp.invlib.gui.page;
 
+import org.bukkit.Bukkit;
 import tsp.invlib.InvLib;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
@@ -29,7 +30,7 @@ public class PageBuilder {
         if (copy != null) {
             this.gui = copy.getGui();
             this.rows = copy.getSize() / 9;
-            this.size = size * 9;
+            this.size = copy.getSize();
             this.name = copy.getName();
             this.buttons = new HashMap<>(copy.getButtons());
             this.handlers = new ArrayList<>(copy.getHandlers());
@@ -70,9 +71,13 @@ public class PageBuilder {
     }
 
     public PageBuilder fill(Button button) {
+        Bukkit.broadcastMessage("fill called! Size: " + size);
         for (int i = 0; i < size; i++) {
             if (this.buttons.get(i) == null) {
+                Bukkit.broadcastMessage("buttons does not contain " + i + ", filling...");
                 button(i, button);
+            } else {
+                Bukkit.broadcastMessage("Buttons contains " + i + ", skipping!");
             }
         }
         return this;
