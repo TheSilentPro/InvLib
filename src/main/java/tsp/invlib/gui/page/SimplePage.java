@@ -46,7 +46,7 @@ public class SimplePage implements Page, Serializable {
             boolean includeControls,
             @Nonnull List<PageHandler> handlers
     ) {
-        this.gui = Preconditions.checkNotNull(gui, "Gui must not be null!");
+        this.gui = gui;
         this.size = rows * 9;
         this.name = Preconditions.checkNotNull(name, "Name must not be null!");
         this.buttons = new HashMap<>(Preconditions.checkNotNull(buttons, "Buttons map must not be null!"));
