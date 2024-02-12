@@ -1,6 +1,7 @@
 package tsp.invlib.gui;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
 import tsp.invlib.gui.page.Page;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public interface GUI {
      * @param player The player.
      * @param page The page number. Starting from 0.
      */
-    void open(Player player, int page);
+    InventoryView open(Player player, int page);
 
     /**
      * Open this gui for a specific {@link Player} at the starting page.

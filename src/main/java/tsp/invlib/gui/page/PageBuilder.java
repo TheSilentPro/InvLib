@@ -1,6 +1,5 @@
 package tsp.invlib.gui.page;
 
-import org.bukkit.Bukkit;
 import tsp.invlib.InvLib;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
@@ -71,7 +70,6 @@ public class PageBuilder {
     }
 
     public PageBuilder fill(Button button) {
-        Bukkit.broadcastMessage("fill called! Size: " + size);
         for (int i = 0; i < size; i++) {
             if (this.buttons.get(i) == null) {
                 button(i, button);

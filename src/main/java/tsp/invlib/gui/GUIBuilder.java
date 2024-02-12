@@ -1,6 +1,7 @@
 package tsp.invlib.gui;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
 import tsp.invlib.gui.page.Page;
 
 import java.util.ArrayList;
@@ -28,12 +29,12 @@ public class GUIBuilder {
         return new SimpleGUI(pages);
     }
 
-    public void open(Player player, int page) {
-        build().open(player, page);
+    public InventoryView open(Player player, int page) {
+        return build().open(player, page);
     }
 
-    public void open(Player player) {
-        open(player, 0);
+    public InventoryView open(Player player) {
+        return open(player, 0);
     }
 
 }

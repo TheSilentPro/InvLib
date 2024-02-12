@@ -2,6 +2,7 @@ package tsp.invlib.gui.page;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
 import tsp.invlib.handler.PageHandler;
@@ -85,9 +86,9 @@ public interface Page extends InventoryHolder {
      *
      * @param player The player to open it for.
      */
-    default void open(Player player) {
+    default InventoryView open(Player player) {
         reRender();
-        player.openInventory(getInventory());
+        return player.openInventory(getInventory());
     }
 
     /**

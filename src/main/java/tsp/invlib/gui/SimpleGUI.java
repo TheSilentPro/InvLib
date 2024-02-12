@@ -2,6 +2,7 @@ package tsp.invlib.gui;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
 import tsp.invlib.gui.page.Page;
 
 import javax.annotation.Nonnull;
@@ -86,14 +87,14 @@ public class SimpleGUI implements GUI, Serializable {
     }
 
     @Override
-    public void open(Player player, int page) {
+    public InventoryView open(Player player, int page) {
         Page p = pages.get(page);
         if (p == null) {
             throw new IllegalArgumentException("Page " + page + " does not exist!");
         }
 
         setCurrentPage(page);
-        p.open(player);
+        return p.open(player);
     }
 
 }
