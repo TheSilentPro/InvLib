@@ -105,39 +105,33 @@ public class SimplePage implements Page, Serializable {
 
     @Override
     public void reRender() {
-        // Add controls
+        // Add controls dynamically based on current page
         if (includeControls) {
-            // back
-            if (controlBack == null && gui.getCurrentPage() - 1 > -1) {
+            // Back button
+            if (controlBack == null && gui.getPreviousPage() >= 0) {
                 controlBack = new ControlButton(size - 6, new ItemBuilder()
                         .material(Material.ARROW)
                         .name(ChatColor.RED + "Back")
-                        .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human number
+                        .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human readable
                         .build(), this, ControlType.BACK);
             }
             if (controlBack != null) {
                 setButton(controlBack.getSlot(), controlBack);
             }
 
-            // current
-            int totalPages = gui.getPages().size(); // Ensure this is correct
-            if (controlCurrent == null) {
-                controlCurrent = new ControlButton(size - 5, new ItemBuilder()
-                        .material(Material.PAPER)
-                        .name(ChatColor.GRAY + "Page " +
-                                ChatColor.GOLD + gui.getCurrentPage() +
-                                ChatColor.GRAY + "/" +
-                                ChatColor.RED + totalPages)
-                        .build(), this, ControlType.CURRENT);
-            }
-            setButton(controlCurrent.getSlot(), controlCurrent);
+            // Current page button
+            controlCurrent = new ControlButton(size - 5, new ItemBuilder()
+                    .material(Material.PAPER)
+                    .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
+                    .build(), this, ControlType.CURRENT);
+            setButton(controlCurrent.getSlot(), controlCurrent); // Always reset the current button to keep it updated
 
-            // next
-            if (controlNext == null && gui.getCurrentPage() + 1 < totalPages) {  // Fix off-by-one
+            // Next button
+            if (controlNext == null && gui.getNextPage() < gui.getPages().size()) {
                 controlNext = new ControlButton(size - 4, new ItemBuilder()
                         .material(Material.ARROW)
                         .name(ChatColor.GREEN + "Next")
-                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getNextPage() + 1)) // +1 for human-readable
+                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getNextPage() + 1))
                         .build(), this, ControlType.NEXT);
             }
             if (controlNext != null) {
@@ -154,6 +148,7 @@ public class SimplePage implements Page, Serializable {
             }
         }
     }
+
 
     @Nonnull
     @Override

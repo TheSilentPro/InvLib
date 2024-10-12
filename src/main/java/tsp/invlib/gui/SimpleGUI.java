@@ -78,12 +78,11 @@ public class SimpleGUI implements GUI, Serializable {
     }
 
     public int getNextPage() {
-        return Math.min(getCurrentPage(), this.pages.size()); // Use size - 1 for 0-based index
+        return Math.min(getCurrentPage() + 1, this.pages.size() - 1);
     }
 
-    @Override
     public int getPreviousPage() {
-        return Math.max(getCurrentPage(), 0);
+        return Math.max(getCurrentPage() - 1, 0); // Corrected logic
     }
 
     @Override
