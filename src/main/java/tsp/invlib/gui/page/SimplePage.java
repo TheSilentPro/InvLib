@@ -124,8 +124,8 @@ public class SimplePage implements Page, Serializable {
             if (controlCurrent == null) {
                 controlCurrent = new ControlButton(size - 5, new ItemBuilder()
                         .material(Material.PAPER)
-                        .name(ChatColor.GOLD + "Page " +
-                                (gui.getCurrentPage() + 1) + // +1 for human-readable
+                        .name(ChatColor.GRAY + "Page " +
+                                ChatColor.GOLD + gui.getCurrentPage() +
                                 ChatColor.GRAY + "/" +
                                 ChatColor.RED + totalPages)
                         .build(), this, ControlType.CURRENT);
