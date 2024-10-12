@@ -108,7 +108,8 @@ public class SimplePage implements Page, Serializable {
         // Add controls dynamically based on current page
         if (includeControls) {
             // Back button
-            if (gui.getPreviousPage() > 0) {
+            System.out.println("back page: " + gui.getPreviousPage());
+            if (getGui().getPreviousPage() >= 0 && getGui().getCurrentPage() > 0) {
                 if (controlBack == null) {
                     controlBack = new ControlButton(size - 6, new ItemBuilder()
                             .material(Material.ARROW)
@@ -120,6 +121,7 @@ public class SimplePage implements Page, Serializable {
             }
 
             // Current page button
+            System.out.println("current page: " + gui.getCurrentPage());
             controlCurrent = new ControlButton(size - 5, new ItemBuilder()
                     .material(Material.PAPER)
                     .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
@@ -127,6 +129,7 @@ public class SimplePage implements Page, Serializable {
             setButton(controlCurrent.getSlot(), controlCurrent); // Always reset the current button to keep it updated
 
             // Next button
+            System.out.println("next page: " + gui.getNextPage());
             if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
                 if (controlNext == null) {
                     controlNext = new ControlButton(size - 4, new ItemBuilder()
