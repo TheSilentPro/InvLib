@@ -113,7 +113,7 @@ public class SimplePage implements Page, Serializable {
                     controlBack = new ControlButton(size - 6, new ItemBuilder()
                             .material(Material.ARROW)
                             .name(ChatColor.RED + "Back")
-                            .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human readable
+                            .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human-readable
                             .build(), this, ControlType.BACK);
                 }
                 setButton(controlBack.getSlot(), controlBack);
@@ -132,7 +132,7 @@ public class SimplePage implements Page, Serializable {
                     controlNext = new ControlButton(size - 4, new ItemBuilder()
                             .material(Material.ARROW)
                             .name(ChatColor.GREEN + "Next")
-                            .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 1))
+                            .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 2))
                             .build(), this, ControlType.NEXT);
                 }
                 setButton(controlNext.getSlot(), controlNext);
