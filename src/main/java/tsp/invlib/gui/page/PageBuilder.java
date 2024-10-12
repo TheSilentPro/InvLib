@@ -20,6 +20,7 @@ public class PageBuilder {
     private GUI gui;
     private int rows = 1;
     private int size;
+    private int limit;
     private String name = "Page";
     private HashMap<Integer, Button> buttons = new HashMap<>();
     private ArrayList<PageHandler> handlers = new ArrayList<>();
@@ -52,6 +53,11 @@ public class PageBuilder {
     public PageBuilder rows(int rows) {
         this.rows = rows;
         this.size = rows * 9;
+        return this;
+    }
+
+    public PageBuilder limit(int limit) {
+        this.limit = limit;
         return this;
     }
 
@@ -153,7 +159,7 @@ public class PageBuilder {
     }
 
     public Page build() {
-        return new SimplePage(gui, rows, name, buttons, includeControls, handlers);
+        return new SimplePage(gui, rows, limit, name, buttons, includeControls, handlers);
     }
 
 }

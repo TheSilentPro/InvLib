@@ -28,6 +28,7 @@ public class SimplePage implements Page, Serializable {
 
     private GUI gui;
     private final int size;
+    private int limit;
     private final String name;
     private final HashMap<Integer, Button> buttons;
     private final ArrayList<PageHandler> handlers;
@@ -41,6 +42,7 @@ public class SimplePage implements Page, Serializable {
     public SimplePage(
             @Nonnull GUI gui,
             int rows,
+            int limit,
             @Nonnull String name,
             @Nonnull Map<Integer, Button> buttons,
             boolean includeControls,
@@ -48,6 +50,7 @@ public class SimplePage implements Page, Serializable {
     ) {
         this.gui = gui;
         this.size = rows * 9;
+        this.limit = limit != -1 ? limit : size;
         this.name = Preconditions.checkNotNull(name, "Name must not be null!");
         this.buttons = new HashMap<>(Preconditions.checkNotNull(buttons, "Buttons map must not be null!"));
         this.handlers = new ArrayList<>(Preconditions.checkNotNull(handlers, "Handlers list must not be null!"));
@@ -68,6 +71,16 @@ public class SimplePage implements Page, Serializable {
     @Override
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    @Override
+    public int getLimit() {
+        return limit;
     }
 
     @Override
@@ -107,23 +120,24 @@ public class SimplePage implements Page, Serializable {
             }
 
             // current
+            int totalPages = gui.getPages().size(); // Ensure this is correct
             if (controlCurrent == null) {
                 controlCurrent = new ControlButton(size - 5, new ItemBuilder()
                         .material(Material.PAPER)
-                        .name(ChatColor.GOLD + "Page " + (gui.getCurrentPage() >= gui.getPages().size() ? ChatColor.RED : ChatColor.GREEN) +
-                                (gui.getCurrentPage() + 1) + // +1 for human number
+                        .name(ChatColor.GOLD + "Page " +
+                                (gui.getCurrentPage() + 1) + // +1 for human-readable
                                 ChatColor.GRAY + "/" +
-                                ChatColor.RED + gui.getPages().size())
+                                ChatColor.RED + totalPages)
                         .build(), this, ControlType.CURRENT);
             }
-            setButton(controlCurrent.getSlot(), controlCurrent); // No need for null-check, this is always not-null due to guard block above.
+            setButton(controlCurrent.getSlot(), controlCurrent);
 
             // next
-            if (controlNext == null && gui.getNextPage() < gui.getPages().size()) {
+            if (controlNext == null && gui.getCurrentPage() + 1 < totalPages) {  // Fix off-by-one
                 controlNext = new ControlButton(size - 4, new ItemBuilder()
                         .material(Material.ARROW)
                         .name(ChatColor.GREEN + "Next")
-                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getNextPage() + 1)) // +1 for human number
+                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getNextPage() + 1)) // +1 for human-readable
                         .build(), this, ControlType.NEXT);
             }
             if (controlNext != null) {

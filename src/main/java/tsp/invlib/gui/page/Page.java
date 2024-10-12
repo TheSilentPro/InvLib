@@ -46,6 +46,10 @@ public interface Page extends InventoryHolder {
      */
     int getSize();
 
+    void setLimit(int limit);
+
+    int getLimit();
+
     /**
      * The name of this page.
      *
