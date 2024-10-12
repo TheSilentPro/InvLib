@@ -108,14 +108,14 @@ public class SimplePage implements Page, Serializable {
         // Add controls dynamically based on current page
         if (includeControls) {
             // Back button
-            if (controlBack == null && gui.getPreviousPage() >= 0) {
-                controlBack = new ControlButton(size - 6, new ItemBuilder()
-                        .material(Material.ARROW)
-                        .name(ChatColor.RED + "Back")
-                        .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human readable
-                        .build(), this, ControlType.BACK);
-            }
-            if (controlBack != null) {
+            if (gui.getPreviousPage() > 0) {
+                if (controlBack == null) {
+                    controlBack = new ControlButton(size - 6, new ItemBuilder()
+                            .material(Material.ARROW)
+                            .name(ChatColor.RED + "Back")
+                            .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human readable
+                            .build(), this, ControlType.BACK);
+                }
                 setButton(controlBack.getSlot(), controlBack);
             }
 
@@ -127,14 +127,14 @@ public class SimplePage implements Page, Serializable {
             setButton(controlCurrent.getSlot(), controlCurrent); // Always reset the current button to keep it updated
 
             // Next button
-            if (controlNext == null && gui.getNextPage() < gui.getPages().size()) {
-                controlNext = new ControlButton(size - 4, new ItemBuilder()
-                        .material(Material.ARROW)
-                        .name(ChatColor.GREEN + "Next")
-                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getNextPage() + 1))
-                        .build(), this, ControlType.NEXT);
-            }
-            if (controlNext != null) {
+            if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
+                if (controlNext == null) {
+                    controlNext = new ControlButton(size - 4, new ItemBuilder()
+                            .material(Material.ARROW)
+                            .name(ChatColor.GREEN + "Next")
+                            .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 1))
+                            .build(), this, ControlType.NEXT);
+                }
                 setButton(controlNext.getSlot(), controlNext);
             }
         }
