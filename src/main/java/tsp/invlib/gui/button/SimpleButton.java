@@ -22,8 +22,8 @@ public class SimpleButton implements Button, Serializable {
     @Serial
     private static final long serialVersionUID = -4090406724315902075L;
 
-    private final ItemStack item;
-    private final Consumer<InventoryClickEvent> clickAction;
+    private ItemStack item;
+    private Consumer<InventoryClickEvent> clickAction;
 
     public SimpleButton(@Nonnull ItemStack item, @Nullable Consumer<InventoryClickEvent> clickAction) {
         this.item = Preconditions.checkNotNull(item, "Item must not be null!");
@@ -36,6 +36,16 @@ public class SimpleButton implements Button, Serializable {
 
     public SimpleButton(@Nonnull Material material) {
         this(new ItemStack(Preconditions.checkNotNull(material, "Material must not be null!")));
+    }
+
+    public SimpleButton setItem(ItemStack item) {
+        this.item = item;
+        return this;
+    }
+
+    public SimpleButton setClickAction(Consumer<InventoryClickEvent> clickAction) {
+        this.clickAction = clickAction;
+        return this;
     }
 
     @Override

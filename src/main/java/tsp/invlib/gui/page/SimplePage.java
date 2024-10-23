@@ -2,7 +2,6 @@ package tsp.invlib.gui.page;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -10,10 +9,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
 import tsp.invlib.gui.button.control.ControlButton;
-import tsp.invlib.gui.button.control.ControlType;
 import tsp.invlib.handler.PageHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
@@ -26,14 +25,15 @@ public class SimplePage implements Page, Serializable {
     @Serial
     private static final long serialVersionUID = -2303582995747170968L;
 
-    private GUI gui;
+    private @Nonnull GUI gui;
+    private @Nullable GUI parentGui;
     private final int size;
     private int limit;
-    private final String name;
-    private final HashMap<Integer, Button> buttons;
-    private final ArrayList<PageHandler> handlers;
-    private final Inventory inventory;
-    private final boolean includeControls;
+    private @Nonnull final String name;
+    private @Nonnull final HashMap<Integer, Button> buttons;
+    private @Nonnull final ArrayList<PageHandler> handlers;
+    private @Nonnull final Inventory inventory;
+    private boolean includeControls;
 
     private ControlButton controlBack;
     private ControlButton controlCurrent;
@@ -41,14 +41,19 @@ public class SimplePage implements Page, Serializable {
 
     public SimplePage(
             @Nonnull GUI gui,
+            @Nullable GUI parentGui,
             int rows,
             int limit,
             @Nonnull String name,
             @Nonnull Map<Integer, Button> buttons,
             boolean includeControls,
-            @Nonnull List<PageHandler> handlers
+            @Nonnull List<PageHandler> handlers,
+            ControlButton controlBack,
+            ControlButton controlCurrent,
+            ControlButton controlNext
     ) {
         this.gui = gui;
+        this.parentGui = parentGui;
         this.size = rows * 9;
         this.limit = limit != -1 ? limit : size;
         this.name = Preconditions.checkNotNull(name, "Name must not be null!");
@@ -56,16 +61,31 @@ public class SimplePage implements Page, Serializable {
         this.handlers = new ArrayList<>(Preconditions.checkNotNull(handlers, "Handlers list must not be null!"));
         this.inventory = Bukkit.createInventory(this, size, name);
         this.includeControls = includeControls;
+        this.controlBack = controlBack;
+        this.controlCurrent = controlCurrent;
+        this.controlNext = controlNext;
     }
 
+    @Nonnull
     @Override
     public GUI getGui() {
         return gui;
     }
 
     @Override
-    public void setGui(GUI gui) {
+    public void setGui(@Nonnull GUI gui) {
         this.gui = gui;
+    }
+
+    @Nullable
+    @Override
+    public GUI getParentGui() {
+        return parentGui;
+    }
+
+    @Override
+    public void setParentGui(@Nullable GUI parentGui) {
+        this.parentGui = parentGui;
     }
 
     @Override
@@ -83,6 +103,7 @@ public class SimplePage implements Page, Serializable {
         return limit;
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return name;
@@ -103,46 +124,62 @@ public class SimplePage implements Page, Serializable {
         return Collections.unmodifiableMap(buttons);
     }
 
+    public void setIncludeControls(boolean includeControls) {
+        this.includeControls = includeControls;
+    }
+
+    public boolean shouldIncludeControls() {
+        return includeControls;
+    }
+
+    public void setControlBack(ControlButton controlBack) {
+        this.controlBack = controlBack;
+    }
+
+    public void setControlCurrent(ControlButton controlCurrent) {
+        this.controlCurrent = controlCurrent;
+    }
+
+    public void setControlNext(ControlButton controlNext) {
+        this.controlNext = controlNext;
+    }
+
+    public ControlButton getControlBack() {
+        return controlBack;
+    }
+
+    public ControlButton getControlCurrent() {
+        return controlCurrent;
+    }
+
+    public ControlButton getControlNext() {
+        return controlNext;
+    }
+
     @Override
     public void reRender() {
         // Add controls dynamically based on current page
-        if (includeControls) {
+        if (shouldIncludeControls()) {
             // Back button
             if (getGui().getPreviousPage() >= 0 && getGui().getCurrentPage() > 0) {
-                if (controlBack == null) {
-                    controlBack = new ControlButton(size - 6, new ItemBuilder()
-                            .material(Material.ARROW)
-                            .name(ChatColor.RED + "Back")
-                            .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)) // +1 for human-readable
-                            .build(), this, ControlType.BACK);
-                }
-                setButton(controlBack.getSlot(), controlBack);
+                setButton(getControlBack().getSlot(), getControlBack());
             }
 
             // Current page button
-            controlCurrent = new ControlButton(size - 5, new ItemBuilder()
-                    .material(Material.PAPER)
-                    .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
-                    .build(), this, ControlType.CURRENT);
-            setButton(controlCurrent.getSlot(), controlCurrent); // Always reset the current button to keep it updated
+            setButton(getControlCurrent().getSlot(), getControlCurrent());
 
             // Next button
             if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
-                controlNext = new ControlButton(size - 4, new ItemBuilder()
-                        .material(Material.ARROW)
-                        .name(ChatColor.GREEN + "Next")
-                        .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 2))
-                        .build(), this, ControlType.NEXT);
-                setButton(controlNext.getSlot(), controlNext);
+                setButton(getControlNext().getSlot(), getControlNext());
             }
         }
 
         // Update inventory
-        inventory.clear();
-        for (Map.Entry<Integer, Button> entry : buttons.entrySet()) {
+        getInventory().clear();
+        for (Map.Entry<Integer, Button> entry : getButtons().entrySet()) {
             Button button = entry.getValue();
             if (button != null) {
-                inventory.setItem(entry.getKey(), button.getItem());
+                getInventory().setItem(entry.getKey(), button.getItem());
             }
         }
     }
@@ -159,7 +196,7 @@ public class SimplePage implements Page, Serializable {
         return handlers;
     }
 
-    private static class ItemBuilder {
+    protected static class ItemBuilder {
 
         private Material material;
         private String name;

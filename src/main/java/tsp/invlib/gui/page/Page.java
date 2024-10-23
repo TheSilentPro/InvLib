@@ -39,6 +39,20 @@ public interface Page extends InventoryHolder {
     void setGui(GUI gui);
 
     /**
+     * The parent GUI instance, if any.
+     *
+     * @return The gui instance.
+     */
+    GUI getParentGui();
+
+    /**
+     * Sets the parent GUI instance.
+     *
+     * @param gui The gui instance.
+     */
+    void setParentGui(GUI gui);
+
+    /**
      * The size of this page.
      * Must be a multiple of 9!
      *

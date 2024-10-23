@@ -1,8 +1,12 @@
 package tsp.invlib.gui.page;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import tsp.invlib.InvLib;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
+import tsp.invlib.gui.button.control.ControlButton;
+import tsp.invlib.gui.button.control.ControlType;
 import tsp.invlib.handler.PageClickHandler;
 import tsp.invlib.handler.PageCloseHandler;
 import tsp.invlib.handler.PageHandler;
@@ -11,6 +15,7 @@ import tsp.invlib.handler.PageOpenHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author TheSilentPro (Silent)
@@ -18,6 +23,7 @@ import java.util.List;
 public class PageBuilder {
 
     private GUI gui;
+    private GUI parentGui;
     private int rows = 1;
     private int size;
     private int limit;
@@ -25,6 +31,10 @@ public class PageBuilder {
     private HashMap<Integer, Button> buttons = new HashMap<>();
     private ArrayList<PageHandler> handlers = new ArrayList<>();
     private boolean includeControls = false;
+
+    private ControlButton controlBack;
+    private ControlButton controlCurrent;
+    private ControlButton controlNext;
 
     public PageBuilder(Page copy) {
         if (copy != null) {
@@ -34,11 +44,33 @@ public class PageBuilder {
             this.name = copy.getName();
             this.buttons = new HashMap<>(copy.getButtons());
             this.handlers = new ArrayList<>(copy.getHandlers());
+
+            if (copy instanceof SimplePage simpleCopy) {
+                this.includeControls = simpleCopy.shouldIncludeControls();
+                this.controlBack = simpleCopy.getControlBack();
+                this.controlCurrent = simpleCopy.getControlCurrent();
+                this.controlNext = simpleCopy.getControlNext();
+            }
         }
     }
 
     public PageBuilder(GUI gui) {
         this.gui = gui;
+        this.controlBack = new ControlButton(size - 6, new SimplePage.ItemBuilder()
+                .material(Material.ARROW)
+                .name(ChatColor.RED + "Back")
+                .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1))
+                .build(), gui, parentGui, ControlType.BACK);
+        this.controlCurrent = new ControlButton(size - 5, new SimplePage.ItemBuilder()
+                .material(Material.PAPER)
+                .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
+                .lore(ChatColor.GRAY + "Click to go to the previous menu.")
+                .build(), gui, parentGui, ControlType.CURRENT);
+        this.controlNext = new ControlButton(size - 4, new SimplePage.ItemBuilder()
+                .material(Material.ARROW)
+                .name(ChatColor.GREEN + "Next")
+                .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 2))
+                .build(), gui, parentGui, ControlType.NEXT);
     }
 
     public PageBuilder() {
@@ -47,6 +79,11 @@ public class PageBuilder {
 
     public PageBuilder gui(GUI gui) {
         this.gui = gui;
+        return this;
+    }
+
+    public PageBuilder parentGui(GUI gui) {
+        this.parentGui = gui;
         return this;
     }
 
@@ -73,6 +110,26 @@ public class PageBuilder {
 
     public PageBuilder button(Button button) {
         return button(this.buttons.keySet().size() - 1, button);
+    }
+
+    public PageBuilder includeControlButtons() {
+        this.includeControls = true;
+        return this;
+    }
+
+    public PageBuilder controlBack(Consumer<ControlButton> button) {
+        button.accept(controlBack);
+        return this;
+    }
+
+    public PageBuilder controlCurrent(Consumer<ControlButton> button) {
+        button.accept(controlCurrent);
+        return this;
+    }
+
+    public PageBuilder controlNext(Consumer<ControlButton> button) {
+        button.accept(controlNext);
+        return this;
     }
 
     public PageBuilder fill(Button button) {
@@ -123,11 +180,6 @@ public class PageBuilder {
         return this;
     }
 
-    public PageBuilder includeControlButtons() {
-        this.includeControls = true;
-        return this;
-    }
-
     public PageBuilder handler(PageHandler handler) {
         this.handlers.add(handler);
         return this;
@@ -159,7 +211,7 @@ public class PageBuilder {
     }
 
     public Page build() {
-        return new SimplePage(gui, rows, limit, name, buttons, includeControls, handlers);
+        return new SimplePage(gui, parentGui, rows, limit, name, buttons, includeControls, handlers, controlBack, controlCurrent, controlNext);
     }
 
 }

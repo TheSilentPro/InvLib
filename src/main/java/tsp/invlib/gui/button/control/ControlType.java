@@ -7,6 +7,7 @@ public enum ControlType {
 
     BACK,
     CURRENT,
-    NEXT
+    NEXT,
+    NONE
 
 }

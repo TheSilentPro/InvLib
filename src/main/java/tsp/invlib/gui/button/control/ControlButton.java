@@ -2,26 +2,37 @@ package tsp.invlib.gui.button.control;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.SimpleButton;
-import tsp.invlib.gui.page.Page;
 
 /**
  * @author TheSilentPro (Silent)
  */
 public class ControlButton extends SimpleButton {
 
-    private final int slot;
+    private int slot;
 
-    public ControlButton(int slot, ItemStack item, Page page, ControlType type) {
+    public ControlButton(int slot, ItemStack item, GUI gui, GUI parentGui, ControlType type) {
         super(item, event -> {
+            if (type == ControlType.NONE) {
+                return;
+            }
+
             if (event.getWhoClicked() instanceof Player player) {
                 if (type == ControlType.BACK) {
-                    page.getGui().open(player, page.getGui().getPreviousPage());
+                    gui.open(player, gui.getPreviousPage());
                 } else if (type == ControlType.NEXT) {
-                    page.getGui().open(player, page.getGui().getNextPage());
+                    gui.open(player, gui.getNextPage());
+                } else if (type == ControlType.CURRENT) {
+                    if (parentGui != null) {
+                        parentGui.open(player);
+                    }
                 }
             }
         });
+    }
+
+    public void setSlot(int slot) {
         this.slot = slot;
     }
 

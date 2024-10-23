@@ -52,11 +52,12 @@ public class SimpleGUI implements GUI, Serializable {
     }
 
     @Override
-    public void addPage(Page page) {
+    public SimpleGUI addPage(Page page) {
         if (page.getGui() == null) {
             page.setGui(this);
         }
         this.pages.add(page);
+        return this;
     }
 
     @Override

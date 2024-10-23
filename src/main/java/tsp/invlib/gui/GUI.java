@@ -28,7 +28,7 @@ public interface GUI {
      *
      * @param page The page.
      */
-    void addPage(Page page);
+    SimpleGUI addPage(Page page);
 
     /**
      * Get a {@link Page} at a specific index.
