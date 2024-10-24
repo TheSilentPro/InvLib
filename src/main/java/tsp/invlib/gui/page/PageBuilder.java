@@ -15,6 +15,7 @@ import tsp.invlib.handler.PageOpenHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -73,9 +74,7 @@ public class PageBuilder {
                 .build(), gui, parentGui, ControlType.NEXT);
     }
 
-    public PageBuilder() {
-        this((GUI) null);
-    }
+    public PageBuilder() {}
 
     public PageBuilder gui(GUI gui) {
         this.gui = gui;
@@ -211,6 +210,10 @@ public class PageBuilder {
     }
 
     public Page build() {
+        Objects.requireNonNull(gui);
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(buttons);
+        Objects.requireNonNull(handlers);
         return new SimplePage(gui, parentGui, rows, limit, name, buttons, includeControls, handlers, controlBack, controlCurrent, controlNext);
     }
 

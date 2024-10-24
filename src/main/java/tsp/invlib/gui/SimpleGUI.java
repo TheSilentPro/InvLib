@@ -6,6 +6,7 @@ import org.bukkit.inventory.InventoryView;
 import tsp.invlib.gui.page.Page;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,20 +22,27 @@ public class SimpleGUI implements GUI, Serializable {
     @Serial
     private static final long serialVersionUID = 4823345690315125419L;
 
+    private final GUI parentGui;
     private final ArrayList<Page> pages;
-
     private int currentPage;
 
-    public SimpleGUI(@Nonnull ArrayList<Page> pages) {
+    public SimpleGUI(@Nullable GUI parentGui, @Nonnull ArrayList<Page> pages) {
         this.pages = Preconditions.checkNotNull(pages, "Pages list must not be null!");
+        this.parentGui = parentGui;
     }
 
     public SimpleGUI(List<Page> pages) {
-        this(new ArrayList<>(pages));
+        this(null, new ArrayList<>(pages));
     }
 
     public SimpleGUI() {
         this(new ArrayList<>());
+    }
+
+    @Nullable
+    @Override
+    public GUI getParentGui() {
+        return parentGui;
     }
 
     /**
@@ -55,6 +63,9 @@ public class SimpleGUI implements GUI, Serializable {
     public SimpleGUI addPage(Page page) {
         if (page.getGui() == null) {
             page.setGui(this);
+        }
+        if (page.getParentGui() == null) {
+            page.setParentGui(parentGui);
         }
         this.pages.add(page);
         return this;

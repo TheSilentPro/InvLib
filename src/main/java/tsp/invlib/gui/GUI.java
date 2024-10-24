@@ -14,6 +14,8 @@ import java.util.Optional;
  */
 public interface GUI {
 
+    GUI getParentGui();
+
     /**
      * Set a page at a specific index.
      * Index meaning the page number.
