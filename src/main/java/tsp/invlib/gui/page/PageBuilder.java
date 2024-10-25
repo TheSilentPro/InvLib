@@ -57,8 +57,8 @@ public class PageBuilder {
 
     public PageBuilder(GUI gui) {
         this.gui = gui;
-        this.rows = 6 / 9;
-        this.size = 53;
+        this.rows = 6;
+        this.size = rows * 9;
         this.name = "Menu";
         this.buttons = new HashMap<>();
         this.handlers = new ArrayList<>();
@@ -104,6 +104,7 @@ public class PageBuilder {
     public PageBuilder includeControlButtons(boolean defaults) {
         this.includeControls = true;
         if (defaults) {
+            System.out.println("size = " + size);
             this.controlBack = new ControlButton(size - 6, new SimplePage.ItemBuilder()
                     .material(Material.ARROW)
                     .name(ChatColor.RED + "Back")
