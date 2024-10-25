@@ -229,7 +229,9 @@ public class PageBuilder {
         if (gui.getPreviousPage() >= 0 && gui.getCurrentPage() > 0) {
             button(controlBack.getSlot(), controlBack);
         }
-        button(controlCurrent.getSlot(), controlCurrent);
+        if (controlCurrent != null) {
+            button(controlCurrent.getSlot(), controlCurrent);
+        }
         if (controlNext != null) {
             button(controlNext.getSlot(), controlNext);
         }
