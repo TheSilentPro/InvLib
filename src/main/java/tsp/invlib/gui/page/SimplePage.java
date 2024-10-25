@@ -165,14 +165,17 @@ public class SimplePage implements Page, Serializable {
         if (shouldIncludeControls()) {
             // Back button
             if (getGui().getPreviousPage() >= 0 && getGui().getCurrentPage() > 0) {
+                System.out.println("control back = " + getControlBack().getSlot());
                 setButton(getControlBack().getSlot(), getControlBack());
             }
 
             // Current page button
+            System.out.println("control curr = " + getControlCurrent().getSlot());
             setButton(getControlCurrent().getSlot(), getControlCurrent());
 
             // Next button
             if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
+                System.out.println("control next = " + getControlNext().getSlot());
                 setButton(getControlNext().getSlot(), getControlNext());
             }
         }
