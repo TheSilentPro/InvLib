@@ -33,11 +33,12 @@ public class SimplePage implements Page, Serializable {
     private @Nonnull final HashMap<Integer, Button> buttons;
     private @Nonnull final ArrayList<PageHandler> handlers;
     private @Nonnull final Inventory inventory;
-    private boolean includeControls;
 
-    private ControlButton controlBack;
-    private ControlButton controlCurrent;
-    private ControlButton controlNext;
+    // PageBuilder manages controls, these are just for information here.
+    private final boolean includeControls;
+    private final ControlButton controlBack;
+    private final ControlButton controlCurrent;
+    private final ControlButton controlNext;
 
     public SimplePage(
             @Nonnull GUI gui,
@@ -124,24 +125,8 @@ public class SimplePage implements Page, Serializable {
         return Collections.unmodifiableMap(buttons);
     }
 
-    public void setIncludeControls(boolean includeControls) {
-        this.includeControls = includeControls;
-    }
-
     public boolean shouldIncludeControls() {
         return includeControls;
-    }
-
-    public void setControlBack(ControlButton controlBack) {
-        this.controlBack = controlBack;
-    }
-
-    public void setControlCurrent(ControlButton controlCurrent) {
-        this.controlCurrent = controlCurrent;
-    }
-
-    public void setControlNext(ControlButton controlNext) {
-        this.controlNext = controlNext;
     }
 
     public ControlButton getControlBack() {
@@ -158,28 +143,7 @@ public class SimplePage implements Page, Serializable {
 
     @Override
     public void reRender() {
-        // Update inventory
         getInventory().clear();
-
-        // Add controls dynamically based on current page
-        if (shouldIncludeControls()) {
-            // Back button
-            if (getGui().getPreviousPage() >= 0 && getGui().getCurrentPage() > 0) {
-                System.out.println("control back = " + getControlBack().getSlot());
-                setButton(getControlBack().getSlot(), getControlBack());
-            }
-
-            // Current page button
-            System.out.println("control curr = " + getControlCurrent().getSlot());
-            setButton(getControlCurrent().getSlot(), getControlCurrent());
-
-            // Next button
-            if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
-                System.out.println("control next = " + getControlNext().getSlot());
-                setButton(getControlNext().getSlot(), getControlNext());
-            }
-        }
-
         for (Map.Entry<Integer, Button> entry : getButtons().entrySet()) {
             Button button = entry.getValue();
             if (button != null) {

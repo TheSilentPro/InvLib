@@ -104,7 +104,6 @@ public class PageBuilder {
     public PageBuilder includeControlButtons(boolean defaults) {
         this.includeControls = true;
         if (defaults) {
-            System.out.println("size = " + size);
             this.controlBack = new ControlButton(size - 6, new SimplePage.ItemBuilder()
                     .material(Material.ARROW)
                     .name(ChatColor.RED + "Back")
@@ -226,6 +225,22 @@ public class PageBuilder {
         Objects.requireNonNull(name);
         Objects.requireNonNull(buttons);
         Objects.requireNonNull(handlers);
+
+        // Set controls
+        if (gui.getPreviousPage() >= 0 && gui.getCurrentPage() > 0) {
+            if (controlBack != null) {
+                button(controlBack.getSlot(), controlBack);
+            }
+        }
+        if (controlCurrent != null) {
+            button(controlCurrent.getSlot(), controlCurrent);
+        }
+        if (controlNext != null) {
+            if (gui.getCurrentPage() < gui.getPages().size() - 1) {
+                button(controlNext.getSlot(), controlNext);
+            }
+        }
+
         return new SimplePage(gui, parentGui, rows, limit, name, buttons, includeControls, handlers, controlBack, controlCurrent, controlNext);
     }
 
