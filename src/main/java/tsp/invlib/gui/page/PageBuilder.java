@@ -104,7 +104,6 @@ public class PageBuilder {
     public PageBuilder includeControlButtons(boolean defaults) {
         this.includeControls = true;
         if (defaults) {
-            System.out.println("SIZE = " + size);
             this.controlBack = new ControlButton(size - 6, new SimplePage.ItemBuilder()
                     .material(Material.ARROW)
                     .name(ChatColor.RED + "Back")

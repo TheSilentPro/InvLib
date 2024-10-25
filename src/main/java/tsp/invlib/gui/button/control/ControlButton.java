@@ -30,6 +30,7 @@ public class ControlButton extends SimpleButton {
                 }
             }
         });
+        System.out.println("setting button slot = " + slot);
     }
 
     public void setSlot(int slot) {
@@ -37,6 +38,7 @@ public class ControlButton extends SimpleButton {
     }
 
     public int getSlot() {
+        System.out.println("BUTTON SLOT = " + slot);
         return slot;
     }
 
