@@ -228,9 +228,18 @@ public class PageBuilder {
         Objects.requireNonNull(handlers);
 
         //debug
-        button(controlBack.getSlot(), controlBack);
-        button(controlCurrent.getSlot(), controlCurrent);
-        button(controlNext.getSlot(), controlNext);
+        if (controlBack != null) {
+            System.out.println("back = " + controlBack.getSlot());
+            button(controlBack.getSlot(), controlBack);
+        }
+        if (controlCurrent != null) {
+            System.out.println("current = " + controlCurrent.getSlot());
+            button(controlCurrent.getSlot(), controlCurrent);
+        }
+        if (controlNext != null) {
+            System.out.println("next = " + controlNext.getSlot());
+            button(controlNext.getSlot(), controlNext);
+        }
 
         // Set controls
         /*
