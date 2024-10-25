@@ -165,14 +165,17 @@ public class SimplePage implements Page, Serializable {
         if (includeControls) {
             if (gui.getPreviousPage() >= 0 && gui.getCurrentPage() > 0) {
                 if (controlBack != null) {
+                    controlBack.setItem(new ItemBuilder(controlBack.getItem()).lore(0, ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1)).build());
                     setButton(controlBack.getSlot(), controlBack);
                 }
             }
             if (controlCurrent != null) {
+                controlCurrent.setItem(new ItemBuilder(controlCurrent.getItem()).lore(0, ChatColor.GRAY + "Click to go to the previous menu.").build());
                 setButton(controlCurrent.getSlot(), controlCurrent);
             }
             if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
                 if (controlNext != null) {
+                    controlNext.setItem(new ItemBuilder(controlNext.getItem()).lore(0, ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 2)).build());
                     setButton(controlNext.getSlot(), controlNext);
                 }
             }
@@ -202,7 +205,16 @@ public class SimplePage implements Page, Serializable {
 
         private Material material;
         private String name;
-        private final List<String> lore = new ArrayList<>();
+        private List<String> lore = new ArrayList<>();
+
+        public ItemBuilder(ItemStack source) {
+            this.material = source.getType();
+            //noinspection DataFlowIssue
+            this.name = source.getItemMeta().getDisplayName();
+            this.lore = source.getItemMeta().getLore();;
+        }
+
+        public ItemBuilder() {}
 
         public ItemBuilder material(Material material) {
             this.material = material;
@@ -216,6 +228,11 @@ public class SimplePage implements Page, Serializable {
 
         public ItemBuilder lore(String line) {
             this.lore.add(line);
+            return this;
+        }
+
+        public ItemBuilder lore(int index, String line) {
+            this.lore.set(index, line);
             return this;
         }
 
