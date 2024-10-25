@@ -211,7 +211,7 @@ public class SimplePage implements Page, Serializable {
             this.material = source.getType();
             //noinspection DataFlowIssue
             this.name = source.getItemMeta().getDisplayName();
-            this.lore = source.getItemMeta().getLore();;
+            this.lore = source.getItemMeta().getLore() != null ? source.getItemMeta().getLore() : new ArrayList<>();
         }
 
         public ItemBuilder() {}
