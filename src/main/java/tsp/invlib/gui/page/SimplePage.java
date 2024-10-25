@@ -2,6 +2,7 @@ package tsp.invlib.gui.page;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
 import tsp.invlib.gui.button.control.ControlButton;
+import tsp.invlib.gui.button.control.ControlType;
 import tsp.invlib.handler.PageHandler;
 
 import javax.annotation.Nonnull;
@@ -34,11 +36,10 @@ public class SimplePage implements Page, Serializable {
     private @Nonnull final ArrayList<PageHandler> handlers;
     private @Nonnull final Inventory inventory;
 
-    // PageBuilder manages controls, these are just for information here.
-    private final boolean includeControls;
-    private final ControlButton controlBack;
-    private final ControlButton controlCurrent;
-    private final ControlButton controlNext;
+    private boolean includeControls;
+    private ControlButton controlBack;
+    private ControlButton controlCurrent;
+    private ControlButton controlNext;
 
     public SimplePage(
             @Nonnull GUI gui,
@@ -125,6 +126,22 @@ public class SimplePage implements Page, Serializable {
         return Collections.unmodifiableMap(buttons);
     }
 
+    public void setIncludeControls(boolean includeControls) {
+        this.includeControls = includeControls;
+    }
+
+    public void setControlBack(ControlButton controlBack) {
+        this.controlBack = controlBack;
+    }
+
+    public void setControlCurrent(ControlButton controlCurrent) {
+        this.controlCurrent = controlCurrent;
+    }
+
+    public void setControlNext(ControlButton controlNext) {
+        this.controlNext = controlNext;
+    }
+
     public boolean shouldIncludeControls() {
         return includeControls;
     }
@@ -144,6 +161,23 @@ public class SimplePage implements Page, Serializable {
     @Override
     public void reRender() {
         getInventory().clear();
+
+        if (includeControls) {
+            if (gui.getPreviousPage() >= 0 && gui.getCurrentPage() > 0) {
+                if (controlBack != null) {
+                    setButton(controlBack.getSlot(), controlBack);
+                }
+            }
+            if (controlCurrent != null) {
+                setButton(controlCurrent.getSlot(), controlCurrent);
+            }
+            if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
+                if (controlNext != null) {
+                    setButton(controlNext.getSlot(), controlNext);
+                }
+            }
+        }
+
         for (Map.Entry<Integer, Button> entry : getButtons().entrySet()) {
             Button button = entry.getValue();
             if (button != null) {

@@ -101,24 +101,29 @@ public class PageBuilder {
         return button(this.buttons.keySet().size() - 1, button);
     }
 
+    public PageBuilder addDefaultControlButtons() {
+        this.controlBack = new ControlButton(size - 6, new SimplePage.ItemBuilder()
+                .material(Material.ARROW)
+                .name(ChatColor.RED + "Back")
+                .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1))
+                .build(), gui, parentGui, ControlType.BACK);
+        this.controlCurrent = new ControlButton(size - 5, new SimplePage.ItemBuilder()
+                .material(Material.PAPER)
+                .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
+                .lore(ChatColor.GRAY + "Click to go to the previous menu.")
+                .build(), gui, parentGui, ControlType.CURRENT);
+        this.controlNext = new ControlButton(size - 4, new SimplePage.ItemBuilder()
+                .material(Material.ARROW)
+                .name(ChatColor.GREEN + "Next")
+                .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 2))
+                .build(), gui, parentGui, ControlType.NEXT);
+        return this;
+    }
+
     public PageBuilder includeControlButtons(boolean defaults) {
         this.includeControls = true;
         if (defaults) {
-            this.controlBack = new ControlButton(size - 6, new SimplePage.ItemBuilder()
-                    .material(Material.ARROW)
-                    .name(ChatColor.RED + "Back")
-                    .lore(ChatColor.GRAY + "Brings you back to page " + ChatColor.RED + (gui.getPreviousPage() + 1))
-                    .build(), gui, parentGui, ControlType.BACK);
-            this.controlCurrent = new ControlButton(size - 5, new SimplePage.ItemBuilder()
-                    .material(Material.PAPER)
-                    .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
-                    .lore(ChatColor.GRAY + "Click to go to the previous menu.")
-                    .build(), gui, parentGui, ControlType.CURRENT);
-            this.controlNext = new ControlButton(size - 4, new SimplePage.ItemBuilder()
-                    .material(Material.ARROW)
-                    .name(ChatColor.GREEN + "Next")
-                    .lore(ChatColor.GRAY + "Brings you to page " + ChatColor.GREEN + (gui.getCurrentPage() + 2))
-                    .build(), gui, parentGui, ControlType.NEXT);
+            return addDefaultControlButtons();
         }
         return this;
     }
@@ -225,17 +230,6 @@ public class PageBuilder {
         Objects.requireNonNull(name);
         Objects.requireNonNull(buttons);
         Objects.requireNonNull(handlers);
-
-        if (gui.getPreviousPage() >= 0 && gui.getCurrentPage() > 0) {
-            button(controlBack.getSlot(), controlBack);
-        }
-        if (controlCurrent != null) {
-            button(controlCurrent.getSlot(), controlCurrent);
-        }
-        if (controlNext != null) {
-            button(controlNext.getSlot(), controlNext);
-        }
-
         return new SimplePage(gui, parentGui, rows, limit, name, buttons, includeControls, handlers, controlBack, controlCurrent, controlNext);
     }
 
