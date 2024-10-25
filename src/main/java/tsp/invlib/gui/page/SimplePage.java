@@ -158,6 +158,9 @@ public class SimplePage implements Page, Serializable {
 
     @Override
     public void reRender() {
+        // Update inventory
+        getInventory().clear();
+
         // Add controls dynamically based on current page
         if (shouldIncludeControls()) {
             // Back button
@@ -174,8 +177,6 @@ public class SimplePage implements Page, Serializable {
             }
         }
 
-        // Update inventory
-        getInventory().clear();
         for (Map.Entry<Integer, Button> entry : getButtons().entrySet()) {
             Button button = entry.getValue();
             if (button != null) {
