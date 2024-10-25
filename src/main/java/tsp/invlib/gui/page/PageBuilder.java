@@ -226,22 +226,6 @@ public class PageBuilder {
         Objects.requireNonNull(buttons);
         Objects.requireNonNull(handlers);
 
-        //debug
-        if (controlBack != null) {
-            System.out.println("back = " + controlBack.getSlot());
-            button(controlBack.getSlot(), controlBack);
-        }
-        if (controlCurrent != null) {
-            System.out.println("current = " + controlCurrent.getSlot());
-            button(controlCurrent.getSlot(), controlCurrent);
-        }
-        if (controlNext != null) {
-            System.out.println("next = " + controlNext.getSlot());
-            button(controlNext.getSlot(), controlNext);
-        }
-
-        // Set controls
-        /*
         if (gui.getPreviousPage() >= 0 && gui.getCurrentPage() > 0) {
             button(controlBack.getSlot(), controlBack);
         }
@@ -249,8 +233,6 @@ public class PageBuilder {
         if (controlNext != null) {
             button(controlNext.getSlot(), controlNext);
         }
-
-         */
 
         return new SimplePage(gui, parentGui, rows, limit, name, buttons, includeControls, handlers, controlBack, controlCurrent, controlNext);
     }
