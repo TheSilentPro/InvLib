@@ -170,7 +170,11 @@ public class SimplePage implements Page, Serializable {
                 }
             }
             if (controlCurrent != null) {
-                controlCurrent.setItem(new ItemBuilder(controlCurrent.getItem()).lore(ChatColor.GRAY + "Click to go to the previous menu.").build());
+                controlCurrent.setItem(new ItemBuilder(controlCurrent.getItem())
+                        .name(ChatColor.GRAY + "Page " + ChatColor.GOLD + (gui.getCurrentPage() + 1) + ChatColor.GRAY + "/" + ChatColor.RED + gui.getPages().size())
+                        .lore(ChatColor.GRAY + "Click to go to the previous menu.")
+                        .build()
+                );
                 setButton(controlCurrent.getSlot(), controlCurrent);
             }
             if (getGui().getCurrentPage() < getGui().getPages().size() - 1) {
