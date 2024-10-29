@@ -227,7 +227,11 @@ public class SimplePage implements Page, Serializable {
         }
 
         public ItemBuilder lore(String line) {
-            this.lore.add(line);
+            if (this.lore.isEmpty()) {
+                this.lore.add(line);
+            } else {
+                this.lore.set(0, line);
+            }
             return this;
         }
 
