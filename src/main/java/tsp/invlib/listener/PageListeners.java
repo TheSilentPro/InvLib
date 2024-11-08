@@ -19,7 +19,7 @@ public class PageListeners implements Listener {
 
     @EventHandler
     public void onPageClick(InventoryClickEvent event) {
-        if (event.getClickedInventory().getHolder() instanceof Page page) {
+        if (event.getView().getTopInventory() instanceof Page page) {
             page.getHandlers(PageClickHandler.class).forEach(handler -> handler.onClick(event));
             page.getButton(event.getRawSlot()).ifPresent(button -> button.onClick(event));
         }
