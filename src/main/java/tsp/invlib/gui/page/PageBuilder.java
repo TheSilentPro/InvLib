@@ -218,9 +218,6 @@ public class PageBuilder {
 
     public PageBuilder onControlClick(BiConsumer<ControlButton, InventoryClickEvent> event) {
         return onClick(e -> {
-            if (e.isCancelled()) {
-                return;
-            }
             if (buttons.get(e.getRawSlot()) instanceof ControlButton controlButton) {
                 event.accept(controlButton, e);
             }

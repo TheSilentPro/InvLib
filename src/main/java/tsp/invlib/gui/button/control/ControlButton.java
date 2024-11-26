@@ -11,6 +11,7 @@ import tsp.invlib.gui.button.SimpleButton;
 public class ControlButton extends SimpleButton {
 
     private int slot;
+    private ControlType type;
 
     public ControlButton(int slot, ItemStack item, GUI gui, GUI parentGui, ControlType type) {
         super(item, event -> {
@@ -31,6 +32,7 @@ public class ControlButton extends SimpleButton {
             }
         });
         this.slot = slot;
+        this.type = type;
     }
 
     public void setSlot(int slot) {
@@ -39,6 +41,14 @@ public class ControlButton extends SimpleButton {
 
     public int getSlot() {
         return slot;
+    }
+
+    public ControlType getType() {
+        return type;
+    }
+
+    public void setType(ControlType type) {
+        this.type = type;
     }
 
 }
