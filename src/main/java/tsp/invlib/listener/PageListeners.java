@@ -21,7 +21,9 @@ public class PageListeners implements Listener {
     public void onPageClick(InventoryClickEvent event) {
         if (event.getView().getTopInventory().getHolder() instanceof Page page) {
             page.getHandlers(PageClickHandler.class).forEach(handler -> handler.onClick(event));
-            page.getButton(event.getRawSlot()).ifPresent(button -> button.onClick(event));
+            if (!event.isCancelled()) {
+                page.getButton(event.getRawSlot()).ifPresent(button -> button.onClick(event));
+            }
         }
     }
 
