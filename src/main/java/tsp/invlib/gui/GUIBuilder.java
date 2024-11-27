@@ -2,7 +2,6 @@ package tsp.invlib.gui;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
-import org.jetbrains.annotations.NotNull;
 import tsp.invlib.gui.page.Page;
 
 import java.util.ArrayList;
@@ -14,12 +13,12 @@ public class GUIBuilder {
 
     private final ArrayList<Page> pages = new ArrayList<>();
 
-    public GUIBuilder page(int index, @NotNull Page page) {
+    public GUIBuilder page(int index, Page page) {
         this.pages.set(index, page);
         return this;
     }
 
-    public GUIBuilder page(@NotNull Page... pages) {
+    public GUIBuilder page(Page... pages) {
         for (Page page : pages) {
             this.pages.add(this.pages.size(), page);
         }
@@ -30,11 +29,11 @@ public class GUIBuilder {
         return new SimpleGUI(pages);
     }
 
-    public InventoryView open(@NotNull Player player, int page) {
+    public InventoryView open(Player player, int page) {
         return build().open(player, page);
     }
 
-    public InventoryView open(@NotNull Player player) {
+    public InventoryView open(Player player) {
         return open(player, 0);
     }
 

@@ -1,14 +1,18 @@
 package tsp.invlib.gui;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
 import tsp.invlib.gui.page.Page;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author TheSilentPro (Silent)
@@ -22,8 +26,8 @@ public class SimpleGUI implements GUI, Serializable {
     private final ArrayList<Page> pages;
     private int currentPage;
 
-    public SimpleGUI(@Nullable GUI parentGui, @NotNull ArrayList<Page> pages) {
-        this.pages = pages;
+    public SimpleGUI(@Nullable GUI parentGui, @Nonnull ArrayList<Page> pages) {
+        this.pages = Preconditions.checkNotNull(pages, "Pages list must not be null!");
         this.parentGui = parentGui;
     }
 

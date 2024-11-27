@@ -1,18 +1,20 @@
 package tsp.invlib.gui.page;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.Button;
 import tsp.invlib.gui.button.control.ControlButton;
+import tsp.invlib.gui.button.control.ControlType;
 import tsp.invlib.handler.PageHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
@@ -25,14 +27,14 @@ public class SimplePage implements Page, Serializable {
     @Serial
     private static final long serialVersionUID = -2303582995747170968L;
 
-    private @NotNull GUI gui;
+    private @Nonnull GUI gui;
     private @Nullable GUI parentGui;
     private final int size;
     private int limit;
-    private @NotNull final String name;
-    private @NotNull final HashMap<Integer, Button> buttons;
-    private @NotNull final ArrayList<PageHandler> handlers;
-    private @NotNull final Inventory inventory;
+    private @Nonnull final String name;
+    private @Nonnull final HashMap<Integer, Button> buttons;
+    private @Nonnull final ArrayList<PageHandler> handlers;
+    private @Nonnull final Inventory inventory;
 
     private boolean includeControls;
     private ControlButton controlBack;
@@ -40,14 +42,14 @@ public class SimplePage implements Page, Serializable {
     private ControlButton controlNext;
 
     public SimplePage(
-            @NotNull GUI gui,
+            @Nonnull GUI gui,
             @Nullable GUI parentGui,
             int rows,
             int limit,
-            @NotNull String name,
-            @NotNull Map<Integer, Button> buttons,
+            @Nonnull String name,
+            @Nonnull Map<Integer, Button> buttons,
             boolean includeControls,
-            @NotNull List<PageHandler> handlers,
+            @Nonnull List<PageHandler> handlers,
             ControlButton controlBack,
             ControlButton controlCurrent,
             ControlButton controlNext
@@ -56,9 +58,9 @@ public class SimplePage implements Page, Serializable {
         this.parentGui = parentGui;
         this.size = rows * 9;
         this.limit = limit != -1 ? limit : size;
-        this.name = name;
-        this.buttons = new HashMap<>(buttons);
-        this.handlers = new ArrayList<>(handlers);
+        this.name = Preconditions.checkNotNull(name, "Name must not be null!");
+        this.buttons = new HashMap<>(Preconditions.checkNotNull(buttons, "Buttons map must not be null!"));
+        this.handlers = new ArrayList<>(Preconditions.checkNotNull(handlers, "Handlers list must not be null!"));
         this.inventory = Bukkit.createInventory(this, size, name);
         this.includeControls = includeControls;
         this.controlBack = controlBack;
@@ -66,14 +68,14 @@ public class SimplePage implements Page, Serializable {
         this.controlNext = controlNext;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public GUI getGui() {
         return gui;
     }
 
     @Override
-    public void setGui(@NotNull GUI gui) {
+    public void setGui(@Nonnull GUI gui) {
         this.gui = gui;
     }
 
@@ -103,7 +105,7 @@ public class SimplePage implements Page, Serializable {
         return limit;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public String getName() {
         return name;
@@ -192,7 +194,7 @@ public class SimplePage implements Page, Serializable {
     }
 
 
-    @NotNull
+    @Nonnull
     @Override
     public Inventory getInventory() {
         return inventory;

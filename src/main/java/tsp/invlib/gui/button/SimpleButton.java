@@ -1,11 +1,12 @@
 package tsp.invlib.gui.button;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Optional;
@@ -24,16 +25,17 @@ public class SimpleButton implements Button, Serializable {
     private ItemStack item;
     private Consumer<InventoryClickEvent> clickAction;
 
-    public SimpleButton(@NotNull ItemStack item, @Nullable Consumer<InventoryClickEvent> clickAction) {
+    public SimpleButton(@Nonnull ItemStack item, @Nullable Consumer<InventoryClickEvent> clickAction) {
+        this.item = Preconditions.checkNotNull(item, "Item must not be null!");
         this.clickAction = clickAction;
     }
 
-    public SimpleButton(@NotNull ItemStack item) {
+    public SimpleButton(@Nonnull ItemStack item) {
         this(item, null);
     }
 
-    public SimpleButton(@NotNull Material material) {
-        this(new ItemStack(material));
+    public SimpleButton(@Nonnull Material material) {
+        this(new ItemStack(Preconditions.checkNotNull(material, "Material must not be null!")));
     }
 
     public SimpleButton setItem(ItemStack item) {
