@@ -218,8 +218,13 @@ public class PageBuilder {
 
     public PageBuilder onControlClick(BiConsumer<ControlButton, InventoryClickEvent> event) {
         return onClick(e -> {
-            if (buttons.get(e.getRawSlot()) instanceof ControlButton controlButton) {
-                event.accept(controlButton, e);
+            int slot = e.getRawSlot();
+            if (slot == controlBack.getSlot()) {
+                event.accept(controlBack, e);
+            } else if (slot == controlCurrent.getSlot()) {
+                event.accept(controlCurrent, e);
+            } else if (slot == controlNext.getSlot()) {
+                event.accept(controlNext, e);
             }
         });
     }
