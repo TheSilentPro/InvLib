@@ -16,7 +16,6 @@ import tsp.invlib.handler.PageOpenHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -100,7 +99,7 @@ public class PageBuilder {
     }
 
     public PageBuilder button(Button button) {
-        return button(this.buttons.keySet().size() - 1, button);
+        return button(this.buttons.size() - 1, button);
     }
 
     public PageBuilder addDefaultControlButtons() {
@@ -218,8 +217,13 @@ public class PageBuilder {
 
     public PageBuilder onControlClick(BiConsumer<ControlButton, InventoryClickEvent> event) {
         return onClick(e -> {
-            if (buttons.get(e.getRawSlot()) instanceof ControlButton controlButton) {
-                event.accept(controlButton, e);
+            int slot = e.getRawSlot();
+            if (slot == controlBack.getSlot()) {
+                event.accept(controlBack, e);
+            } else if (slot == controlCurrent.getSlot()) {
+                event.accept(controlCurrent, e);
+            } else if (slot == controlNext.getSlot()) {
+                event.accept(controlNext, e);
             }
         });
     }
@@ -233,10 +237,6 @@ public class PageBuilder {
     }
 
     public Page build() {
-        Objects.requireNonNull(gui);
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(buttons);
-        Objects.requireNonNull(handlers);
         return new SimplePage(gui, parentGui, rows, limit, name, buttons, includeControls, handlers, controlBack, controlCurrent, controlNext);
     }
 

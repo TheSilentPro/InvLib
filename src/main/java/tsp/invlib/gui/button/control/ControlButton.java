@@ -2,6 +2,8 @@ package tsp.invlib.gui.button.control;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import tsp.invlib.gui.GUI;
 import tsp.invlib.gui.button.SimpleButton;
 
@@ -13,7 +15,7 @@ public class ControlButton extends SimpleButton {
     private int slot;
     private ControlType type;
 
-    public ControlButton(int slot, ItemStack item, GUI gui, GUI parentGui, ControlType type) {
+    public ControlButton(int slot, @NotNull ItemStack item, @NotNull GUI gui, @Nullable GUI parentGui, @NotNull ControlType type) {
         super(item, event -> {
             if (type == ControlType.NONE) {
                 return;
@@ -47,7 +49,7 @@ public class ControlButton extends SimpleButton {
         return type;
     }
 
-    public void setType(ControlType type) {
+    public void setType(@NotNull ControlType type) {
         this.type = type;
     }
 

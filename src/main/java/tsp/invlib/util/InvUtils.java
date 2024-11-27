@@ -1,10 +1,9 @@
 package tsp.invlib.util;
 
-import com.google.common.base.Preconditions;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author TheSilentPro (Silent)
@@ -15,9 +14,7 @@ public final class InvUtils {
         throw new IllegalStateException("Utility class must not be initialized.");
     }
 
-    public static void fill(@Nonnull Inventory inventory, @Nonnull ItemStack item) {
-        Preconditions.checkNotNull(inventory, "Inventory must not be null!");
-        Preconditions.checkNotNull(item, "Item must not be null!");
+    public static void fill(@NotNull Inventory inventory, @NotNull ItemStack item) {
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) == null) {
                 inventory.setItem(i, item);
@@ -25,9 +22,7 @@ public final class InvUtils {
         }
     }
 
-    public static void fillRow(@Nonnull Inventory inventory, @Nonnull ItemStack item, int row) {
-        Preconditions.checkNotNull(inventory, "Inventory must not be null!");
-        Preconditions.checkNotNull(item, "Item must not be null!");
+    public static void fillRow(@NotNull Inventory inventory, @NotNull ItemStack item, int row) {
         int index = row * 9;
         for (int i = 0; i < 9; i++) {
             int slot = index + i;
@@ -37,10 +32,7 @@ public final class InvUtils {
         }
     }
 
-    public static void outline(@Nonnull Inventory inventory, @Nonnull ItemStack item) {
-        Preconditions.checkNotNull(inventory, "Inventory must not be null!");
-        Preconditions.checkNotNull(item, "Item must not be null!");
-
+    public static void outline(@NotNull Inventory inventory, @NotNull ItemStack item) {
         int rows = inventory.getSize() / 9;
         int cols = 9;
 
@@ -57,7 +49,7 @@ public final class InvUtils {
         }
     }
 
-    public static void border(@Nonnull Inventory inventory, @Nonnull ItemStack item) {
+    public static void border(@NotNull Inventory inventory, @NotNull ItemStack item) {
         outline(inventory, item);
     }
 
