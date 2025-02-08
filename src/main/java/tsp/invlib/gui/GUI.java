@@ -1,95 +1,77 @@
 package tsp.invlib.gui;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.InventoryView;
-import tsp.invlib.gui.page.Page;
+import tsp.invlib.gui.registry.GUIRegistry;
+import tsp.invlib.page.Page;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
- * Represents a GUI that can hold multiple {@link Page Pages}.
+ * Represents a graphical user interface (GUI) that manages pages identified by an index of type {@code T}.
+ * <p>
+ * This interface defines methods for opening the GUI for players, retrieving and updating pages,
+ * and accessing the unique key and registry associated with this GUI.
+ * </p>
  *
- * @author TheSilentPro (Silent)
+ * @param <T> the type used to index and identify pages in the GUI
+ *
+ * @author TheSilentPro
  */
-public interface GUI {
-
-    GUI getParentGui();
+public interface GUI<T> {
 
     /**
-     * Set a page at a specific index.
-     * Index meaning the page number.
+     * Opens the GUI for the specified player and displays the page associated with the given index.
      *
-     * @param index The index.
-     * @param page The page.
+     * @param player the player for whom the GUI is to be opened
+     * @param index  the index identifying the page to open
      */
-    void setPage(int index, Page page);
+    void open(Player player, T index);
 
     /**
-     * Add a {@link Page} to this gui.
+     * Gets the unique {@link NamespacedKey} associated with this GUI.
      *
-     * @param page The page.
+     * @return the unique key for this GUI
      */
-    SimpleGUI addPage(Page page);
+    NamespacedKey getKey();
 
     /**
-     * Get a {@link Page} at a specific index.
+     * Retrieves the page associated with the specified index.
      *
-     * @param index The page number.
-     * @return The page if present.
+     * @param index the index identifying the page
+     * @return an {@link Optional} containing the page if it exists, or an empty {@link Optional} otherwise
      */
-    Optional<Page> getPage(int index);
+    Optional<Page> getPage(T index);
 
     /**
-     * Get the {@link List} of {@link Page Pages} this gui has.
+     * Updates the page associated with the specified index by applying the given consumer.
      *
-     * @return The list of pages.
+     * @param index the index identifying the page to update
+     * @param page  a {@link Consumer} that applies updates to the page
      */
-    List<Page> getPages();
+    void updatePage(T index, Consumer<Page> page);
 
     /**
-     * Get the current page this gui is on.
+     * Sets the page for the specified index.
      *
-     * @return The current page.
+     * @param index the index identifying where to set the page
+     * @param page  the page to set
      */
-    int getCurrentPage();
+    void setPage(T index, Page page);
 
     /**
-     * Get the next page for this gui.
+     * Retrieves a map of all pages in this GUI.
      *
-     * @return The next page.
+     * @return a map where keys are indices of type {@code T} and values are the corresponding pages
      */
-    int getNextPage();
+    Map<T, Page> getPages();
 
     /**
-     * Get the previous page for this gui.
+     * Retrieves the {@link GUIRegistry} associated with this GUI.
      *
-     * @return The previous page.
+     * @return the GUI registry
      */
-    int getPreviousPage();
-
-    /**
-     * Set the current page for this gui.
-     *
-     * @param currentPage The current page.
-     */
-    void setCurrentPage(int currentPage);
-
-    /**
-     * Open this gui for a specific {@link Player} at a specific {@link Page}.
-     *
-     * @param player The player.
-     * @param page The page number. Starting from 0.
-     */
-    InventoryView open(Player player, int page);
-
-    /**
-     * Open this gui for a specific {@link Player} at the starting page.
-     *
-     * @param player The player.
-     */
-    default void open(Player player) {
-        open(player, 0);
-    }
-
+    GUIRegistry<T> getGuiRegistry();
 }
