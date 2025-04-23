@@ -125,9 +125,9 @@ public abstract class AbstractPage implements Page {
         Page effectivePage = isDynamic() ? this.copy() : this;
 
         if (isDynamic()) {
-            for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
+            for (Map.Entry<Integer, Button> buttonEntry : effectivePage.getButtons().entrySet()) {
                 Button button = buttonEntry.getValue();
-                button.onRender(player, this).getItem().ifPresent(item -> effective.setItem(buttonEntry.getKey(), item));
+                button.onRender(player, effectivePage).getItem().ifPresent(item -> effective.setItem(buttonEntry.getKey(), item));
             }
         }
 
