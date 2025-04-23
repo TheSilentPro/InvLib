@@ -2,6 +2,7 @@ package tsp.invlib.page;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -349,6 +350,7 @@ public interface Page extends Animatable {
                     ctx.event().getClickedInventory() != null
                             && ctx.event().getClickedInventory().getType() == InventoryType.PLAYER
                             && ctx.event().getClick() != ClickType.DOUBLE_CLICK // Double click can allow items to be taken from page
+                            && ctx.event().getAction() != InventoryAction.MOVE_TO_OTHER_INVENTORY
             ) {
                 return true; // Allow interaction in player inventory
             }

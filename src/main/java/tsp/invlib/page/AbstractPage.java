@@ -122,6 +122,8 @@ public abstract class AbstractPage implements Page {
 
         // If the page is dynamic, then a copy is shown to the player.
         Inventory effective = isDynamic() ? createInventory() : inventory();
+        Page effectivePage = isDynamic() ? this.copy() : this;
+
         if (isDynamic()) {
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
                 Button button = buttonEntry.getValue();
@@ -143,10 +145,10 @@ public abstract class AbstractPage implements Page {
         }
 
         // Instead of listening for an open event, just call open handlers here.
-        getHandlers(PageOpenHandler.class).forEach(handler -> handler.onOpen(new PageOpenContext(openEvent, this)));
+        getHandlers(PageOpenHandler.class).forEach(handler -> handler.onOpen(new PageOpenContext(openEvent, isDynamic() ? effectivePage : this)));
 
         if (this.registry != null) {
-            this.registry.register(view, isDynamic() ? this.copy() : this); // If the page is dynamic, a copy is registered for the viewer.
+            this.registry.register(view, isDynamic() ? effectivePage : this); // If the page is dynamic, a copy is registered for the viewer.
         }
 
         return view;
