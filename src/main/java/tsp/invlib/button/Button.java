@@ -42,7 +42,8 @@ public interface Button extends Animatable {
      * Checks whether this button is dynamic.
      * <p>
      * Dynamic buttons are rendered each time the page is opened, allowing for changes on each view.
-     * Non-dynamic buttons are rendered only once during {@link Page#render()}.
+     * They can also be manually re-rendered by calling {@link Page#reRender(InventoryView)}.
+     * <bold>Note: If the player parameter in the reRender method is null, the {@link #onRender(Player, Page)} method will not be called!</bold>
      * </p>
      *
      * @return {@code true} if the button is dynamic, {@code false} otherwise.
@@ -89,8 +90,7 @@ public interface Button extends Animatable {
     /**
      * Called when the button is loaded onto a {@link Page} for rendering.
      * <p>
-     * For non-dynamic buttons, this method is invoked during {@link Page#render()}.
-     * For dynamic buttons, it is invoked during {@link Page#open(Player, boolean)}.
+     * This method is invoked during {@link Page#render(InventoryView)}.
      * </p>
      *
      * @param player the player viewing the page. This parameter may be {@code null} if the button is not dynamic.

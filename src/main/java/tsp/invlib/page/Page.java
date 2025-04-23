@@ -104,8 +104,14 @@ public interface Page extends Animatable {
      * <p>
      * Only the buttons present in the page are rendered; other slots are unaffected.
      * </p>
+     *
+     * @param view An inventory view associated with this rendering. Can be null.
      */
-    void render();
+    void render(@Nullable InventoryView view);
+
+    default void render() {
+        render(null);
+    }
 
     /**
      * Clears the page by removing all buttons from the inventory.
@@ -114,8 +120,14 @@ public interface Page extends Animatable {
 
     /**
      * De-renders and then re-renders the page.
+     *
+     * @param view An inventory view associated with this rendering. Can be null.
      */
-    void reRender();
+    void reRender(@Nullable InventoryView view);
+
+    default void reRender() {
+        reRender(null);
+    }
 
     /**
      * Checks if the page has been rendered.

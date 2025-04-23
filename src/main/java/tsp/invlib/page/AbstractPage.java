@@ -82,24 +82,23 @@ public abstract class AbstractPage implements Page {
     }
 
     @Override
-    public void render() {
+    public void render(@Nullable InventoryView view) {
         for (Map.Entry<Integer, Button> entry : this.buttons.entrySet()) {
             Button button = entry.getValue();
-            // Dynamic buttons are only set upon opening.
-            if (button.isDynamic()) {
-                continue;
+            if (view != null) {
+                button.getItem().ifPresent(item -> view.setItem(entry.getKey(), item));
+                button.onRender((Player) view.getPlayer(), this).getItem().ifPresent(item -> view.setItem(entry.getKey(), item));
+            } else {
+                button.getItem().ifPresent(item -> this.inventory.setItem(entry.getKey(), item));
             }
-
-            button.onRender(null, this);
-            button.getItem().ifPresent(item -> this.inventory.setItem(entry.getKey(), item));
         }
         this.rendered = true;
     }
 
     @Override
-    public void reRender() {
+    public void reRender(@Nullable InventoryView view) {
         deRender();
-        render();
+        render(view);
     }
 
     @Override
@@ -115,25 +114,18 @@ public abstract class AbstractPage implements Page {
 
     @Override
     public InventoryView open(Player player, boolean render) {
-        // Renders the page contents if not already rendered
-        if (render && !rendered) {
-            reRender();
-        }
-
         // If the page is dynamic, then a copy is shown to the player.
         Inventory effective = isDynamic() ? createInventory() : inventory();
         Page effectivePage = isDynamic() ? this.copy() : this;
 
-        if (isDynamic()) {
-            for (Map.Entry<Integer, Button> buttonEntry : effectivePage.getButtons().entrySet()) {
-                Button button = buttonEntry.getValue();
-                button.onRender(player, effectivePage).getItem().ifPresent(item -> effective.setItem(buttonEntry.getKey(), item));
-            }
-        }
-
         InventoryView view = player.openInventory(effective);
         if (view == null) {
             throw new IllegalStateException("Could not create inventory view while opening the page: ");
+        }
+
+        // Renders the page contents if not already rendered
+        if (render && !rendered) {
+            reRender(view);
         }
 
         // Trigger an open event
