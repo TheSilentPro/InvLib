@@ -18,7 +18,7 @@ public class ItemBuilder {
     private String name;
     private String displayName;
     private List<String> lore = new ArrayList<>();
-    private boolean glow;
+    private State glow;
 
     public ItemBuilder(Material material) {
         this.material = material;
@@ -32,7 +32,7 @@ public class ItemBuilder {
             this.name = meta.getItemName();
             this.displayName = meta.getDisplayName();
             this.lore = meta.getLore();
-            this.glow = meta.getEnchantmentGlintOverride();
+            this.glow = State.byBoolean(meta.getEnchantmentGlintOverride());
         }
     }
 
@@ -75,13 +75,13 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder glow(boolean state) {
+    public ItemBuilder glow(State state) {
         this.glow = state;
         return this;
     }
 
     public ItemBuilder glow() {
-        return glow(true);
+        return glow(State.TRUE);
     }
 
     public ItemStack build() {
@@ -95,7 +95,7 @@ public class ItemBuilder {
                 meta.setDisplayName(displayName);
             }
             meta.setLore(lore);
-            meta.setEnchantmentGlintOverride(glow);
+            meta.setEnchantmentGlintOverride(glow.toBooleanOrElse(false));
             item.setItemMeta(meta);
         }
         return item;

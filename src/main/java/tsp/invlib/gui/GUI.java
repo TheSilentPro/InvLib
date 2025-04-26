@@ -2,6 +2,8 @@ package tsp.invlib.gui;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import tsp.invlib.button.Button;
 import tsp.invlib.gui.registry.GUIRegistry;
 import tsp.invlib.page.Page;
 
@@ -31,21 +33,6 @@ public interface GUI<T> {
     void open(Player player, T index);
 
     /**
-     * Gets the unique {@link NamespacedKey} associated with this GUI.
-     *
-     * @return the unique key for this GUI
-     */
-    NamespacedKey getKey();
-
-    /**
-     * Retrieves the page associated with the specified index.
-     *
-     * @param index the index identifying the page
-     * @return an {@link Optional} containing the page if it exists, or an empty {@link Optional} otherwise
-     */
-    Optional<Page> getPage(T index);
-
-    /**
      * Updates the page associated with the specified index by applying the given consumer.
      *
      * @param index the index identifying the page to update
@@ -60,6 +47,35 @@ public interface GUI<T> {
      * @param page  the page to set
      */
     void setPage(T index, Page page);
+
+    void populate(int rows, boolean overwriteExisting, int[] ignoredSlots, @NotNull Button... buttons);
+
+    default void populate(int rows, int[] ignoredSlots, @NotNull Button... buttons) {
+        populate(rows, true, ignoredSlots, buttons);
+    }
+
+    default void populate(int rows, boolean overwriteExisting, @NotNull Button... buttons) {
+        populate(rows, overwriteExisting, null, buttons);
+    }
+
+    default void populate(int rows, @NotNull Button... buttons) {
+        populate(rows, true, null, buttons);
+    }
+
+    /**
+     * Gets the unique {@link NamespacedKey} associated with this GUI.
+     *
+     * @return the unique key for this GUI
+     */
+    NamespacedKey getKey();
+
+    /**
+     * Retrieves the page associated with the specified index.
+     *
+     * @param index the index identifying the page
+     * @return an {@link Optional} containing the page if it exists, or an empty {@link Optional} otherwise
+     */
+    Optional<Page> getPage(T index);
 
     /**
      * Retrieves a map of all pages in this GUI.

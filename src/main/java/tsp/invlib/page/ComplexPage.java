@@ -21,7 +21,7 @@ public class ComplexPage extends AbstractPage {
     }
 
     public ComplexPage(InventoryType type, String title) {
-        this(null, type, title);
+        this(PageRegistry.INSTANCE, type, title);
     }
 
     protected ComplexPage(ComplexPage copy) {

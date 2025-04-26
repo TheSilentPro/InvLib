@@ -24,7 +24,7 @@ public class PaginatedComplexPage extends ComplexPage implements PaginatedContro
     }
 
     public PaginatedComplexPage(GUI<Integer> gui, InventoryType type, String title, int backSlot, int currentSlot, int nextSlot) {
-        this(null, gui, type, title, backSlot, currentSlot, nextSlot);
+        this(PageRegistry.INSTANCE, gui, type, title, backSlot, currentSlot, nextSlot);
     }
 
     protected PaginatedComplexPage(PaginatedComplexPage copy) {

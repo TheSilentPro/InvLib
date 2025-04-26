@@ -23,7 +23,7 @@ public class PaginatedSimplePage extends SimplePage implements PaginatedControll
     }
 
     public PaginatedSimplePage(GUI<Integer> gui, String title, int rows, int backSlot, int currentSlot, int nextSlot) {
-        this(null, gui, title, rows, backSlot, currentSlot, nextSlot);
+        this(PageRegistry.INSTANCE, gui, title, rows, backSlot, currentSlot, nextSlot);
     }
 
     protected PaginatedSimplePage(PaginatedSimplePage copy) {

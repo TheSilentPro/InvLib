@@ -1,6 +1,8 @@
 package tsp.invlib.gui;
 
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import tsp.invlib.button.Button;
 import tsp.invlib.gui.registry.GUIRegistry;
 import tsp.invlib.page.Page;
@@ -30,7 +32,7 @@ public class PaginatedGUI extends AbstractGUI<Integer> {
         this(INSTANCE, key);
     }
 
-    public void setControls(Button backButton, Button currentButton, Button nextButton, boolean translate) {
+    public void setControls(@NotNull Button backButton, @NotNull Button currentButton, @NotNull Button nextButton, boolean translate) {
         for (Map.Entry<Integer, Page> entry : getPages().entrySet()) {
             Page page = entry.getValue();
             if (page instanceof PaginatedControllable controllable) {
@@ -67,8 +69,12 @@ public class PaginatedGUI extends AbstractGUI<Integer> {
         }
     }
 
-    public void setControls(Button backButton, Button currentButton, Button nextButton) {
+    public void setControls(@NotNull Button backButton, @NotNull Button currentButton, @NotNull Button nextButton) {
         setControls(backButton, currentButton, nextButton, false);
+    }
+
+    public void open(Player player) {
+        super.open(player, 0);
     }
 
     @Override

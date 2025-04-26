@@ -20,7 +20,7 @@ public class SimplePage extends AbstractPage {
     }
 
     public SimplePage(String title, int rows) {
-        this(null, title, rows);
+        this(PageRegistry.INSTANCE, title, rows);
     }
 
     protected SimplePage(SimplePage copy) {

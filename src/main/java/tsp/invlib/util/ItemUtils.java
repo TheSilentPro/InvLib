@@ -173,35 +173,6 @@ public final class ItemUtils {
                 .replace("${{MAX}}", String.valueOf(max)
                 )
         );
-
-        /*
-        if (meta.hasItemName()) {
-            meta.setItemName(meta.getItemName()
-                    .replace("${{BACK}}", String.valueOf((currentPage - 1) + 1))
-                    .replace("${{CURRENT}}", String.valueOf((currentPage) + 1))
-                    .replace("${{NEXT}}", String.valueOf((currentPage + 1) + 1))
-                    .replace("${{MAX}}", String.valueOf(max)
-                    ));
-        }
-
-        if (meta.hasLore()) {
-            List<String> lore = meta.getLore();
-            if (lore == null) {
-                return item;
-            }
-
-            lore.replaceAll(s -> s
-                    .replace("${{BACK}}", String.valueOf((currentPage - 1) + 1))
-                    .replace("${{CURRENT}}", String.valueOf((currentPage) + 1))
-                    .replace("${{NEXT}}", String.valueOf((currentPage + 1) + 1))
-                    .replace("${{MAX}}", String.valueOf(max)
-                    ));
-            meta.setLore(lore);
-        }
-
-        item.setItemMeta(meta);
-        return item;
-         */
     }
 
 }
