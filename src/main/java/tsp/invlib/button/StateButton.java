@@ -20,16 +20,16 @@ public class StateButton extends SimpleButton {
     private State current;
     private boolean locked;
 
-    public StateButton(ItemStack enabled, ItemStack disabled, ItemStack unset, State current) {
-        super(current == State.TRUE ? enabled : (current == State.FALSE ? disabled : unset));
+    public StateButton(ItemStack enabled, ItemStack disabled, ItemStack unset, State current, boolean dynamic) {
+        super(current == State.TRUE ? enabled : (current == State.FALSE ? disabled : unset), dynamic);
         this.enabled = enabled;
         this.disabled = disabled;
         this.unset = unset;
         this.current = current;
     }
 
-    public StateButton(ItemStack enabled, ItemStack disabled, ItemStack unset) {
-        this(enabled, disabled, unset, State.NOT_SET);
+    public StateButton(ItemStack enabled, ItemStack disabled, ItemStack unset, boolean dynamic) {
+        this(enabled, disabled, unset, State.NOT_SET, dynamic);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class LoopButton extends SimpleButton {
     private int current;
 
     public LoopButton(ItemStack start, ItemStack[] items) {
-        super(start);
+        super(start, true);
         this.items = items;
         this.current = 0;
     }

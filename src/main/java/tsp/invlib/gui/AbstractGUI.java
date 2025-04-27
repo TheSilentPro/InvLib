@@ -50,7 +50,7 @@ public abstract class AbstractGUI<T> implements GUI<T> {
                 if (buttonIndex >= buttons.length) {
                     return; // All buttons placed
                 }
-                if (isIgnored(i, ignoredSlots)) {
+                if (ignoredSlots != null && isIgnored(i, ignoredSlots)) {
                     continue; // Skip ignored slot
                 }
                 if (!overwriteExisting && page.getButton(i).isPresent()) {
@@ -62,6 +62,10 @@ public abstract class AbstractGUI<T> implements GUI<T> {
     }
 
     private boolean isIgnored(int index, int... ignored) {
+        if (ignored == null) {
+            return false;
+        }
+
         for (int ignoredSlot : ignored) {
             if (ignoredSlot == index) {
                 return true;

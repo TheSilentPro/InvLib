@@ -378,6 +378,24 @@ public interface Page extends Animatable {
         });
     }
 
+    default void preventPageInteraction(int... ignoredSlots) {
+        preventPageInteraction(ctx -> {
+            for (int ignoredSlot : ignoredSlots) {
+                if (ignoredSlot == ctx.event().getRawSlot()) {
+                    return true;
+                }
+            }
+            return false;
+        }, ctx -> {
+            for (int ignoredSlot : ignoredSlots) {
+                if (ctx.event().getRawSlots().contains(ignoredSlot)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
     /**
      * Prevents all interactions on the page by cancelling both click and drag events.
      */

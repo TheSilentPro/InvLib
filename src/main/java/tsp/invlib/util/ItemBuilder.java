@@ -18,7 +18,7 @@ public class ItemBuilder {
     private String name;
     private String displayName;
     private List<String> lore = new ArrayList<>();
-    private State glow;
+    private State glow = State.NOT_SET;
 
     public ItemBuilder(Material material) {
         this.material = material;

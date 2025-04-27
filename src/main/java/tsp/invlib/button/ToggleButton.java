@@ -18,15 +18,15 @@ public class ToggleButton extends SimpleButton {
     private boolean current;
     private boolean locked;
 
-    public ToggleButton(ItemStack enabled, ItemStack disabled, boolean current) {
-        super(current ? enabled : disabled);
+    public ToggleButton(ItemStack enabled, ItemStack disabled, boolean current, boolean dynamic) {
+        super(current ? enabled : disabled, dynamic);
         this.current = current;
         this.enabled = enabled;
         this.disabled = disabled;
     }
 
-    public ToggleButton(ItemStack enabled, ItemStack disabled) {
-        this(enabled, disabled, false);
+    public ToggleButton(ItemStack enabled, ItemStack disabled, boolean dynamic) {
+        this(enabled, disabled, false, dynamic);
     }
 
     @Override
